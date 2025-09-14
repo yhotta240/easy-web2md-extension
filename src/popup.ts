@@ -131,6 +131,10 @@ class PopupManager {
       siteUrlInput.focus();
     };
 
+    document.getElementById('filename-clear-button')!.onclick = () => {
+      this.fileName.value = '';
+      this.fileName.focus();
+    };
   }
 
   // 情報タブの初期化
