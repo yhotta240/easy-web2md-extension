@@ -1,4 +1,6 @@
 import { PopupPanel } from './components/popupPanel';
+import { parseHtmlContent } from './utils/html-parser';
+import { toMarkdown } from './utils/markdown-converter';
 
 class PopupManager {
   private panel: PopupPanel;
@@ -105,6 +107,7 @@ class PopupManager {
           } else {
             this.fileName!.value = filename_header;
           }
+          this.processHtmlToMarkdown();
         }
       });
     };
@@ -190,6 +193,68 @@ class PopupManager {
       }
     });
   }
+
+  // HTMLをMarkdownに変換
+  private processHtmlToMarkdown(): void {
+    this.showMessage(`変換中...`);
+    const siteUrlInput = document.getElementById('site-url-input') as HTMLInputElement;
+    const targetUrl = siteUrlInput.value;
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (chrome.runtime.lastError || !tabs || tabs.length === 0) {
+        this.showMessage(`エラー: アクティブなタブが見つかりません。`);
+        console.error(chrome.runtime.lastError?.message || 'No active tab found.');
+        return;
+      }
+
+      const activeTab = tabs[0];
+      console.log("activeTab", activeTab);
+      // content scriptからHTMLを取得
+      if (activeTab.id && activeTab.url && activeTab.url.startsWith('http')) {
+        chrome.tabs.sendMessage(
+          activeTab.id,
+          { action: "get-page-content" },
+          (response) => {
+            if (chrome.runtime.lastError) {
+              this.showMessage(`エラー: ページにアクセスできません。再読み込みしてください。`);
+              console.error(chrome.runtime.lastError.message);
+              return;
+            }
+            if (response && response.html) {
+              this.handleHtml(response.html);
+            } else {
+              this.showMessage(`エラー: ページからHTMLを取得できませんでした。`);
+            }
+          }
+        );
+      } else {
+        this.showMessage(`エラー: 現在のタブではHTMLを取得できません。`);
+      }
+    });
+  }
+
+  //  解析結果を表示
+  private previewResult(result: string): void {
+    const markdownPreview = document.getElementById('markdown-preview');
+    if (markdownPreview) {
+      // TODO: ここでMarkdownをHTMLに変換してプレビュー表示する処理を実装します。
+      // 現時点では、テキストとして表示します。
+      markdownPreview.textContent = result;
+    }
+  }
+
+  private handleHtml(html: string): void {
+    this.showMessage('HTMLを解析中...');
+    const cleanedHtml = parseHtmlContent(html);
+    // this.previewResult(cleanedHtml);
+    this.showMessage('Markdownに変換中...');
+    const markdown = toMarkdown(cleanedHtml);
+    console.log(markdown);
+
+    this.previewResult(markdown);
+    this.showMessage('変換完了');
+  }
+
 
   /** * アクティブなブラウザタブのURLを取得し，コールバック関数を実行する
    * @param {function} callback コールバック関数
