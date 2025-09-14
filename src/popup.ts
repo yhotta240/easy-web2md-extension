@@ -1,16 +1,25 @@
 import { PopupPanel } from './components/popupPanel';
 
 class PopupManager {
+  private panel: PopupPanel;
   private isEnabled: boolean = false; // 有効フラグ
+  private settings: any = {}; // 設定
   private enabledElement: HTMLInputElement | null; // チェックボックス
   private messageDiv: HTMLElement | null; // メッセージ表示エリア
   private manifestData: chrome.runtime.Manifest; // マニフェストデータ
+  private fileName: HTMLInputElement;
+  private filenameCheckbox: HTMLInputElement;
+  private savedFileName: string = '';
+  private keepFilename: boolean = false;
 
   // コンストラクタ
   constructor() {
+    this.panel = new PopupPanel();
     this.enabledElement = document.getElementById('enabled') as HTMLInputElement;
     this.messageDiv = document.getElementById('message');
     this.manifestData = chrome.runtime.getManifest();
+    this.fileName = document.getElementById('filename-input') as HTMLInputElement;
+    this.filenameCheckbox = document.getElementById('filename-checkbox') as HTMLInputElement;
 
     this.loadInitialState();
     this.addEventListeners();
@@ -23,7 +32,11 @@ class PopupManager {
         this.isEnabled = data.isEnabled || false;
         this.enabledElement.checked = this.isEnabled;
       }
-      this.messageOutput(this.dateTime(), this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
+      if (data.settings) {
+        this.settings = data.settings;
+        console.log("settings", this.settings);
+      }
+      this.showMessage(this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
     });
   }
 
@@ -33,7 +46,7 @@ class PopupManager {
       this.enabledElement.addEventListener('change', (event) => {
         this.isEnabled = (event.target as HTMLInputElement).checked;
         chrome.storage.local.set({ isEnabled: this.isEnabled }, () => {
-          this.messageOutput(this.dateTime(), this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
+          this.showMessage(this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
         });
       });
     }
@@ -75,7 +88,54 @@ class PopupManager {
       });
     }
 
+    this.setupDownloadTab();
     this.setupInfoTab();
+  }
+
+  // ダウンロードタブの作成
+  private setupDownloadTab(): void {
+    const siteUrlInput = document.getElementById('site-url-input') as HTMLInputElement;
+    const siteUrlButton = document.getElementById('site-url-button') as HTMLButtonElement;
+
+    const getActiveTabUrlAndProcess = (): void => {
+      this.getActiveTabUrl((baseUrl: string, hostname: string, url: URL) => {
+        if (baseUrl) {
+          siteUrlInput.value = url.href;
+          this.showMessage(``);
+          const filename_header = hostname.replace(/\./g, '_');
+          // TODO: isSaveFilename と saveFilename の実装が必要です
+          // if (isSaveFilename) {
+          //   this.fileName!.value = saveFilename;
+          // } else {
+          this.fileName!.value = filename_header;
+          // }
+
+        }
+      });
+    };
+    getActiveTabUrlAndProcess();
+
+    siteUrlButton.addEventListener('click', getActiveTabUrlAndProcess);
+    siteUrlInput.addEventListener('input', () => {
+      const value = siteUrlInput.value.trim();
+      const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
+      if (!urlPattern.test(value)) {
+        this.showMessage(`無効なURLです: ${value}`);
+        return;
+      }
+      const url = new URL(value);
+      if (!url || !url.hostname) return;
+      const hostname = url.hostname;
+      this.fileName.value = hostname.replace(/\./g, '_');
+      this.showMessage(``);
+
+    });
+
+    document.getElementById('url-clear-button')!.onclick = () => {
+      siteUrlInput.value = '';
+      siteUrlInput.focus();
+    };
+
   }
 
   // 情報タブの初期化
@@ -132,6 +192,21 @@ class PopupManager {
     });
   }
 
+  /** * アクティブなブラウザタブのURLを取得し，コールバック関数を実行する
+   * @param {function} callback コールバック関数
+   * @returns {void}
+   */
+  private getActiveTabUrl(callback: (baseUrl: string, hostname: string, url: URL) => void): void {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) return;
+      if (!tabs[0].url) return;
+      const url = new URL(tabs[0].url);
+      const baseUrl = url.origin;
+      const hostname = url.hostname;
+      callback(baseUrl, hostname, url);
+    });
+  }
+
   /**
    * URLをクリック
    * @param link
@@ -152,15 +227,12 @@ class PopupManager {
   }
 
   /**
-   * メッセージを出力
-   * @param datetime 現在日時
-   * @param message メッセージ
-   * @returns
+   * メッセージを出力する
+   * @param message 出力するメッセージ
+   * @param timestamp 出力時刻（省略すると現在日時を使用）
    */
-  private messageOutput(datetime: string, message: string): void {
-    if (this.messageDiv) {
-      this.messageDiv.innerHTML += `<p class="m-0">${datetime} ${message}</p>`;
-    }
+  private showMessage(message: string, timestamp: string = this.dateTime()) {
+    this.panel.messageOutput(timestamp, message);
   }
 
   /**
@@ -180,4 +252,3 @@ class PopupManager {
 }
 
 new PopupManager();
-new PopupPanel();
