@@ -8,8 +8,6 @@ class PopupManager {
   private manifestData: chrome.runtime.Manifest; // マニフェストデータ
   private fileName: HTMLInputElement;
   private filenameCheckbox: HTMLInputElement;
-  private savedFileName: string = '';
-  private keepFilename: boolean = false;
 
   // コンストラクタ
   constructor() {
@@ -32,7 +30,9 @@ class PopupManager {
       }
       if (data.settings) {
         this.settings = data.settings;
-        console.log("settings", this.settings);
+        this.fileName.value = this.settings.fileName;
+        this.filenameCheckbox.checked = this.settings.fileName !== '';
+        // console.log("settings", this.settings);
       }
       this.showMessage(this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
     });
@@ -51,6 +51,13 @@ class PopupManager {
 
     document.addEventListener('DOMContentLoaded', () => {
       this.initializeUI();
+    });
+
+    this.filenameCheckbox.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      this.settings.fileName = target.checked ? this.fileName.value : '';
+      this.showMessage(`ファイル名: ${this.settings.fileName}${this.settings.saveFilename ? '（記憶する）' : ''}に変更`);
+      chrome.storage.local.set({ settings: this.settings });
     });
   }
 
@@ -92,13 +99,12 @@ class PopupManager {
           siteUrlInput.value = url.href;
           this.showMessage(``);
           const filename_header = hostname.replace(/\./g, '_');
-          // TODO: isSaveFilename と saveFilename の実装が必要です
-          // if (isSaveFilename) {
-          //   this.fileName!.value = saveFilename;
-          // } else {
-          this.fileName!.value = filename_header;
-          // }
-
+          // ファイル名を設定
+          if (this.settings.fileName !== '') {
+            this.fileName!.value = this.settings.fileName;
+          } else {
+            this.fileName!.value = filename_header;
+          }
         }
       });
     };
