@@ -1,0 +1,25 @@
+{
+  "name": "easy-web2md-extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "keywords": [],
+  "author": "yhotta240",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.1.6",
+    "copy-webpack-plugin": "^13.0.1",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "turndown": "^7.2.1"
+  }
+}
