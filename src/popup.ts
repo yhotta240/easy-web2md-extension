@@ -1,5 +1,7 @@
 import { PopupPanel } from './components/popupPanel';
 import { parseHtmlContent } from './utils/html-parser';
+import { renderPreviewResult } from './components/preview-result';
+import { downloadFile } from './utils/file-downloader';
 import { toMarkdown } from './utils/markdown-converter';
 
 class PopupManager {
@@ -107,7 +109,7 @@ class PopupManager {
           } else {
             this.fileName!.value = filename_header;
           }
-          this.processHtmlToMarkdown();
+          this.handleConversion();
         }
       });
     };
@@ -195,20 +197,17 @@ class PopupManager {
   }
 
   // HTMLをMarkdownに変換
-  private processHtmlToMarkdown(): void {
-    this.showMessage(`変換中...`);
+  private handleConversion(): void {
     const siteUrlInput = document.getElementById('site-url-input') as HTMLInputElement;
-    const targetUrl = siteUrlInput.value;
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (chrome.runtime.lastError || !tabs || tabs.length === 0) {
         this.showMessage(`エラー: アクティブなタブが見つかりません。`);
-        console.error(chrome.runtime.lastError?.message || 'No active tab found.');
+        console.error(chrome.runtime.lastError?.message ?? 'No active tab found.');
         return;
       }
 
       const activeTab = tabs[0];
-      console.log("activeTab", activeTab);
       // content scriptからHTMLを取得
       if (activeTab.id && activeTab.url && activeTab.url.startsWith('http')) {
         chrome.tabs.sendMessage(
@@ -234,24 +233,30 @@ class PopupManager {
   }
 
   //  解析結果を表示
-  private previewResult(result: string): void {
-    const markdownPreview = document.getElementById('markdown-preview');
-    if (markdownPreview) {
-      // TODO: ここでMarkdownをHTMLに変換してプレビュー表示する処理を実装します。
-      // 現時点では、テキストとして表示します。
-      markdownPreview.textContent = result;
-    }
+  private setupPreview(result: string): void {
+    const fileName = this.fileName.value || 'download';
+
+    // プレビューUIを描画
+    renderPreviewResult(result, fileName);
+
+    // ダウンロードボタンのイベントリスナー
+    document.getElementById('download-md-button')?.addEventListener('click', () => {
+      if (downloadFile(result, fileName)) {
+        this.showMessage('ダウンロード完了');
+      } else {
+        this.showMessage('ダウンロードに失敗しました。');
+      }
+    });
   }
 
   private handleHtml(html: string): void {
     this.showMessage('HTMLを解析中...');
     const cleanedHtml = parseHtmlContent(html);
-    // this.previewResult(cleanedHtml);
+
     this.showMessage('Markdownに変換中...');
     const markdown = toMarkdown(cleanedHtml);
-    console.log(markdown);
 
-    this.previewResult(markdown);
+    this.setupPreview(markdown);
     this.showMessage('変換完了');
   }
 
