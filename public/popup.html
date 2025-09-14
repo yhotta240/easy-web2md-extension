@@ -44,6 +44,10 @@
         aria-controls="document" aria-selected="false">ドキュメント</a>
     </li>
     <li class="nav-item" role="presentation">
+      <a class="nav-link py-1 p-md-2" id="version-tab" data-bs-toggle="tab" href="#version" role="tab"
+        aria-controls="version" aria-selected="false">バージョン</a>
+    </li>
+    <li class="nav-item" role="presentation">
       <a class="nav-link  p-1 p-md-2" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info"
         aria-selected="false">情報</a>
     </li>
@@ -103,19 +107,13 @@
       aria-labelledby="description-tab">
       <div>
         <h1 class="fs-5">概要</h1>
-        <p>WEBページをマークダウン形式に変換してダウンロードします</p>
-        <p class="my-1 fw-bold">説明:</p>
-        <p>
-          本拡張機能は，WEBページをマークダウン形式に変換してダウンロードします
-          <br><br>
-        </p>
-        <p class="my-1 fw-bold">拡張機能の主な特徴:</p>
+        <p>閲覧しているWebページをワンクリックでMarkdown形式に変換し，ダウンロードできるChrome拡張機能です．</p>
+        <p class="my-1 fw-bold">主な特徴:</p>
         <ul class="mt-1">
-          <li></li>
-        </ul>
-        <p class="my-1 fw-bold">注意点:</p>
-        <ul>
-          <li></li>
+          <li><strong>ワンクリック変換</strong>: 拡張機能のアイコンをクリックするだけで，表示しているページがMarkdownに変換されます．</li>
+          <li><strong>Markdownプレビュー</strong>: 変換されたMarkdownをポップアップ内で確認できます．</li>
+          <li><strong>ファイル名自動設定</strong>: ページのドメイン名を元に，ダウンロードするファイル名を自動で設定します．</li>
+          <li><strong>簡単ダウンロード</strong>: プレビュー画面の「ダウンロード」ボタンから，<code>.md</code>ファイルをすぐに保存できます．</li>
         </ul>
       </div>
     </div>
@@ -123,24 +121,64 @@
     <!-- ドキュメント -->
     <div class="tab-pane fade mt-2 mx-2" id="document" role="tabpanel" style="margin-bottom: 200px;"
       aria-labelledby="document-tab">
-
       <div class="accordion" id="accordion-word">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-              aria-expanded="true" aria-controls="collapseOne">
-              チュートリアル
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseInstall" aria-expanded="false" aria-controls="collapseInstall">
+              インストール
             </button>
           </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordion-word">
+          <div id="collapseInstall" class="accordion-collapse collapse" data-bs-parent="#accordion-word">
             <div class="accordion-body p-3">
-              <p class="mb-2 fw-bold">
-                Chrome ウェブストアから拡張機能をインストール
+              <p>
+                <a href="https://chromewebstore.google.com/" target="_blank"
+                  rel="noopener noreferrer">Chromeウェブストア</a>から本拡張機能をインストールします．
               </p>
             </div>
           </div>
         </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUsage"
+              aria-expanded="true" aria-controls="collapseUsage">
+              使い方
+            </button>
+          </h2>
+          <div id="collapseUsage" class="accordion-collapse collapse show" data-bs-parent="#accordion-word">
+            <div class="accordion-body p-3">
+              <ol>
+                <li>Markdownに変換したいWebページを開きます．</li>
+                <li>Chromeのツールバーにある拡張機能のアイコンをクリックします．</li>
+                <li>ポップアップが開かれ，自動的にページの内容がMarkdownに変換されます．</li>
+                <li>「ダウンロード」タブでプレビューを確認し，必要に応じてファイル名を変更します．</li>
+                <li>「ダウンロード」ボタンをクリックすると，Markdownファイルが保存されます．</li>
+              </ol>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- バージョン情報 -->
+    <div class="tab-pane fade mt-2 mx-2" id="version" role="tabpanel" style="margin-bottom: 200px;"
+      aria-labelledby="version-tab">
+      <ul class="list-group list-group-flush">
+        <h5 class="pt-3 ps-2 mb-2">更新履歴</h5>
+        <li class="list-group-item">
+          <strong>v0.2.0</strong> (2025-09-14)
+          <ul class="small mt-1">
+            <li>WebページをMarkdownに変換する機能を追加．</li>
+            <li>マークダウンのプレビュー機能を改善し，ファイルダウンロード機能を追加．</li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          <strong>v0.1.0</strong> (2025-09-14)
+          <ul class="small mt-1">
+            <li>ファイル名入力のクリア機能を追加．</li>
+          </ul>
+        </li>
+      </ul>
     </div>
 
     <!-- 詳細情報 -->
@@ -186,7 +224,7 @@
         </li>
         <li class="list-group-item">
           <p>サイトへのアクセス:</p>
-          <p id="permission-info">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します。</p>
+          <p id="permission-info">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します．</p>
           <span id="site-access">Checking...</span>
         </li>
         </li>
@@ -208,7 +246,8 @@
         </li>
         <li class="list-group-item">
           <p class="m-0">GitHub: </p>
-          <a class="m-0" id="github-link" href="https://github.com/yhotta240/">https://github.com/yhotta240/</a>
+          <a class="m-0" id="github-link"
+            href="https://github.com/yhotta240/easy-web2md-extension">https://github.com/yhotta240/easy-web2md-extension</a>
           </a>
         </li>
         <li class="list-group-item">
@@ -216,8 +255,8 @@
       </ul>
       <div class="ps-0 " style="margin-bottom: 180px;">
         <h5 class="ps-1">プライバシー</h5>
-        <p class="ps-3">お客様のデータを収集または使用しないことを表明しています。</p>
-        <p class="ps-3">お客様のデータについて以下を宣言します。</p>
+        <p class="ps-3">お客様のデータを収集または使用しないことを表明しています．</p>
+        <p class="ps-3">お客様のデータについて以下を宣言します．</p>
         <div class="m-2">
           <ul>
             <li>
