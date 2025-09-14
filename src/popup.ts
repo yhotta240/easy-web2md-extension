@@ -5,7 +5,6 @@ class PopupManager {
   private isEnabled: boolean = false; // 有効フラグ
   private settings: any = {}; // 設定
   private enabledElement: HTMLInputElement | null; // チェックボックス
-  private messageDiv: HTMLElement | null; // メッセージ表示エリア
   private manifestData: chrome.runtime.Manifest; // マニフェストデータ
   private fileName: HTMLInputElement;
   private filenameCheckbox: HTMLInputElement;
@@ -16,7 +15,6 @@ class PopupManager {
   constructor() {
     this.panel = new PopupPanel();
     this.enabledElement = document.getElementById('enabled') as HTMLInputElement;
-    this.messageDiv = document.getElementById('message');
     this.manifestData = chrome.runtime.getManifest();
     this.fileName = document.getElementById('filename-input') as HTMLInputElement;
     this.filenameCheckbox = document.getElementById('filename-checkbox') as HTMLInputElement;
@@ -54,15 +52,6 @@ class PopupManager {
     document.addEventListener('DOMContentLoaded', () => {
       this.initializeUI();
     });
-
-    const clearButton = document.getElementById('clear-button');
-    if (clearButton) {
-      clearButton.addEventListener('click', () => {
-        if (this.messageDiv) {
-          this.messageDiv.innerHTML = '<p class="m-0"></p>';
-        }
-      });
-    }
   }
 
   // UIの初期化

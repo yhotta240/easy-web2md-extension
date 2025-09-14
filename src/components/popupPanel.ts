@@ -9,6 +9,7 @@ export class PopupPanel {
   private panel: HTMLElement;
   private messagePanel: HTMLElement;
   private messageDiv: HTMLElement;
+  private clearButton: HTMLButtonElement;
 
   private startY: number = 0;
   private tmpPanelHeight: number = 0;
@@ -28,6 +29,7 @@ export class PopupPanel {
     this.panel = document.getElementById('panel')!;
     this.messagePanel = document.querySelector('#messagePanel')!;
     this.messageDiv = document.getElementById('message')!;
+    this.clearButton = document.querySelector('#clear-button')!;
 
     this.initializePanel();
     this.addEventListeners();
@@ -145,6 +147,10 @@ export class PopupPanel {
         this.panel.style.height = `${maxHeight}px`;
       }
     });
+
+    this.clearButton.addEventListener('click', () => {
+      this.clearMessage();
+    });
   }
 
   /**
@@ -156,6 +162,15 @@ export class PopupPanel {
   public messageOutput(datetime: string, message: string): void {
     if (this.messageDiv) {
       this.messageDiv.innerHTML += `<p class="m-0">${datetime} ${message}</p>`;
+    }
+  }
+
+  /**
+   * メッセージをクリア
+   * */
+  public clearMessage(): void {
+    if (this.messageDiv) {
+      this.messageDiv.innerHTML = '<p class="m-0"></p>';
     }
   }
 }
