@@ -72,7 +72,7 @@ class PopupManager {
       title.textContent = this.manifestData.name;
     }
     const titleHeader = document.getElementById('title-header');
-    const name = "簡単Webページマークダウン化 - Easy Web Markdown";
+    const name = "簡単Webページマークダウン化";
     if (titleHeader) {
       titleHeader.textContent = name;
     }
@@ -84,7 +84,7 @@ class PopupManager {
     const newTabButton = document.getElementById('new-tab-button');
     if (newTabButton) {
       newTabButton.addEventListener('click', () => {
-        chrome.tabs.create({ url: 'popup/popup.html' });
+        chrome.tabs.create({ url: '/popup.html' });
       });
     }
 
@@ -127,8 +127,6 @@ class PopupManager {
       if (!url || !url.hostname) return;
       const hostname = url.hostname;
       this.fileName.value = hostname.replace(/\./g, '_');
-      this.showMessage(``);
-
     });
 
     document.getElementById('url-clear-button')!.onclick = () => {
@@ -198,8 +196,6 @@ class PopupManager {
 
   // HTMLをMarkdownに変換
   private handleConversion(): void {
-    const siteUrlInput = document.getElementById('site-url-input') as HTMLInputElement;
-
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (chrome.runtime.lastError || !tabs || tabs.length === 0) {
         this.showMessage(`エラー: アクティブなタブが見つかりません。`);
