@@ -156,7 +156,7 @@
     "message": "アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します．"
   },
   "siteAccessChecking": {
-    "message": "Checking..."
+    "message": "確認中..."
   },
   "infoIncognito": {
     "message": "シークレット モードでの実行を許可する:"
