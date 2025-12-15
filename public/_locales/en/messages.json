@@ -1,0 +1,278 @@
+{
+  "extensionName": {
+    "message": "Easy Web to Markdown"
+  },
+  "extensionDescription": {
+    "message": "Convert web pages to Markdown format and download them"
+  },
+  "appTitle": {
+    "message": "Easy Web to Markdown"
+  },
+  "openInNewTab": {
+    "message": "Open in new tab"
+  },
+  "tabDownload": {
+    "message": "Download"
+  },
+  "tabDescription": {
+    "message": "Description"
+  },
+  "tabDocument": {
+    "message": "Docs"
+  },
+  "tabVersion": {
+    "message": "Version"
+  },
+  "tabInfo": {
+    "message": "Info"
+  },
+  "urlLabel": {
+    "message": "URL"
+  },
+  "urlPlaceholder": {
+    "message": "Enter URL"
+  },
+  "currentUrlButton": {
+    "message": "Current URL"
+  },
+  "filenameLabel": {
+    "message": "Filename:"
+  },
+  "filenamePlaceholder": {
+    "message": "Enter filename"
+  },
+  "rememberFilename": {
+    "message": "Remember filename"
+  },
+  "markdownPreview": {
+    "message": "Markdown Preview"
+  },
+  "webPageNotFound": {
+    "message": "Web page not found"
+  },
+  "descriptionTitle": {
+    "message": "Description"
+  },
+  "descriptionText": {
+    "message": "A Chrome extension that converts the web page you are viewing to Markdown format with one click and allows you to download it."
+  },
+  "mainFeatures": {
+    "message": "Main Features:"
+  },
+  "featureOneClick": {
+    "message": "One-Click Conversion"
+  },
+  "featureOneClickDesc": {
+    "message": "Simply click the extension icon to convert the displayed page to Markdown."
+  },
+  "featurePreview": {
+    "message": "Markdown Preview"
+  },
+  "featurePreviewDesc": {
+    "message": "Preview the converted Markdown within the popup."
+  },
+  "featureAutoFilename": {
+    "message": "Automatic Filename"
+  },
+  "featureAutoFilenameDesc": {
+    "message": "Automatically sets the download filename based on the page's domain name."
+  },
+  "featureEasyDownload": {
+    "message": "Easy Download"
+  },
+  "featureEasyDownloadDesc": {
+    "message": "Save the <code>.md</code> file instantly from the \"Download\" button in the preview screen."
+  },
+  "documentInstall": {
+    "message": "Installation"
+  },
+  "documentInstallText": {
+    "message": "Install this extension from the Chrome Web Store."
+  },
+  "documentUsage": {
+    "message": "How to Use"
+  },
+  "usageStep1": {
+    "message": "Open the web page you want to convert to Markdown."
+  },
+  "usageStep2": {
+    "message": "Click the extension icon in the Chrome toolbar."
+  },
+  "usageStep3": {
+    "message": "A popup opens and the page content is automatically converted to Markdown."
+  },
+  "usageStep4": {
+    "message": "Preview the result in the \"Download\" tab and change the filename if needed."
+  },
+  "usageStep5": {
+    "message": "Click the \"Download\" button to save the Markdown file."
+  },
+  "updateHistory": {
+    "message": "Update History"
+  },
+  "versionBeta1": {
+    "message": "v0.3.0-beta.1"
+  },
+  "versionBeta1Desc1": {
+    "message": "Improved and refined popup UI"
+  },
+  "versionBeta1Desc2": {
+    "message": "Updated icons"
+  },
+  "versionBeta1Desc3": {
+    "message": "Added and updated documentation"
+  },
+  "infoDetails": {
+    "message": "Details"
+  },
+  "linkStorePage": {
+    "message": "Go to Store Page"
+  },
+  "linkManageExtension": {
+    "message": "Manage this extension"
+  },
+  "linkReportIssue": {
+    "message": "Report an Issue"
+  },
+  "infoName": {
+    "message": "Name:"
+  },
+  "infoDescription": {
+    "message": "Description:"
+  },
+  "infoVersion": {
+    "message": "Version:"
+  },
+  "infoId": {
+    "message": "ID:"
+  },
+  "infoPermissions": {
+    "message": "Permissions"
+  },
+  "infoSiteAccess": {
+    "message": "Site Access:"
+  },
+  "siteAccessDescription": {
+    "message": "Allows this extension to read and change all your data on visited websites."
+  },
+  "siteAccessChecking": {
+    "message": "Checking..."
+  },
+  "infoIncognito": {
+    "message": "Allow in Incognito Mode:"
+  },
+  "infoLanguage": {
+    "message": "Language:"
+  },
+  "languageJapanese": {
+    "message": "Japanese"
+  },
+  "infoProvider": {
+    "message": "Provider:"
+  },
+  "infoDeveloper": {
+    "message": "Developer:"
+  },
+  "infoGitHub": {
+    "message": "GitHub:"
+  },
+  "privacyTitle": {
+    "message": "Privacy"
+  },
+  "privacyStatement": {
+    "message": "We declare that we do not collect or use your data."
+  },
+  "privacyDeclaration": {
+    "message": "We declare the following about your data:"
+  },
+  "privacyPoint1": {
+    "message": "Not sold to third parties for purposes other than approved use cases"
+  },
+  "privacyPoint2": {
+    "message": "Not used or transferred for purposes unrelated to the item's core functionality"
+  },
+  "privacyPoint3": {
+    "message": "Not used or transferred to determine creditworthiness or for lending purposes"
+  },
+  "outputTab": {
+    "message": "Output"
+  },
+  "clearMessage": {
+    "message": "Clear Messages"
+  },
+  "maximize": {
+    "message": "Maximize"
+  },
+  "minimize": {
+    "message": "Minimize"
+  },
+  "showPanel": {
+    "message": "Show Panel"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "characters": {
+    "message": "characters"
+  },
+  "downloadButton": {
+    "message": "Download"
+  },
+  "enabledMessage": {
+    "message": " is enabled"
+  },
+  "disabledMessage": {
+    "message": " is disabled"
+  },
+  "filenameChanged": {
+    "message": "Filename: "
+  },
+  "rememberSuffix": {
+    "message": "(remembered)"
+  },
+  "changed": {
+    "message": " changed"
+  },
+  "invalidUrl": {
+    "message": "Invalid URL: "
+  },
+  "errorNoActiveTab": {
+    "message": "Error: No active tab found."
+  },
+  "errorNoAccess": {
+    "message": "Error: Cannot access page. Please reload."
+  },
+  "errorNoHtml": {
+    "message": "Error: Could not retrieve HTML from page."
+  },
+  "errorCannotGetHtml": {
+    "message": "Error: Cannot get HTML from current tab."
+  },
+  "downloadComplete": {
+    "message": "Download complete"
+  },
+  "downloadFailed": {
+    "message": "Download failed."
+  },
+  "parsingHtml": {
+    "message": "Parsing HTML..."
+  },
+  "convertingToMarkdown": {
+    "message": "Converting to Markdown..."
+  },
+  "conversionComplete": {
+    "message": "Conversion complete"
+  },
+  "allSites": {
+    "message": "All sites"
+  },
+  "onClickOnly": {
+    "message": "On click only"
+  },
+  "enabled": {
+    "message": "Enabled"
+  },
+  "disabled": {
+    "message": "Disabled"
+  }
+}

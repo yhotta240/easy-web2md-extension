@@ -3,6 +3,7 @@ import { parseHtmlContent } from './utils/html-parser';
 import { renderPreviewResult } from './components/preview-result';
 import { downloadFile } from './utils/file-downloader';
 import { toMarkdown } from './utils/markdown-converter';
+import { initializeI18n, getMessage } from './utils/i18n';
 
 class PopupManager {
   private panel: PopupPanel;
@@ -21,6 +22,9 @@ class PopupManager {
     this.fileName = document.getElementById('filename-input') as HTMLInputElement;
     this.filenameCheckbox = document.getElementById('filename-checkbox') as HTMLInputElement;
 
+    // i18n 初期化
+    initializeI18n();
+
     this.loadInitialState();
     this.addEventListeners();
   }
@@ -38,7 +42,7 @@ class PopupManager {
         this.filenameCheckbox.checked = this.settings.fileName !== '';
         // console.log("settings", this.settings);
       }
-      this.showMessage(this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
+      this.showMessage(this.isEnabled ? `${this.manifestData.name}${getMessage('enabledMessage')}` : `${this.manifestData.name}${getMessage('disabledMessage')}`);
     });
   }
 
@@ -48,7 +52,7 @@ class PopupManager {
       this.enabledElement.addEventListener('change', (event) => {
         this.isEnabled = (event.target as HTMLInputElement).checked;
         chrome.storage.local.set({ isEnabled: this.isEnabled }, () => {
-          this.showMessage(this.isEnabled ? `${this.manifestData.name} は有効になっています` : `${this.manifestData.name} は無効になっています`);
+          this.showMessage(this.isEnabled ? `${this.manifestData.name}${getMessage('enabledMessage')}` : `${this.manifestData.name}${getMessage('disabledMessage')}`);
         });
       });
     }
@@ -60,7 +64,7 @@ class PopupManager {
     this.filenameCheckbox.addEventListener('change', (e: Event) => {
       const target = e.target as HTMLInputElement;
       this.settings.fileName = target.checked ? this.fileName.value : '';
-      this.showMessage(`ファイル名: ${this.settings.fileName}${this.settings.saveFilename ? '（記憶する）' : ''}に変更`);
+      this.showMessage(`${getMessage('filenameChanged')}${this.settings.fileName}${this.settings.saveFilename ? getMessage('rememberSuffix') : ''}${getMessage('changed')}`);
       chrome.storage.local.set({ settings: this.settings });
     });
   }
@@ -72,9 +76,8 @@ class PopupManager {
       title.textContent = this.manifestData.name;
     }
     const titleHeader = document.getElementById('title-header');
-    const name = "簡単Webページマークダウン化";
     if (titleHeader) {
-      titleHeader.textContent = name;
+      titleHeader.textContent = getMessage('appTitle');
     }
     const enabledLabel = document.getElementById('enabled-label');
     if (enabledLabel) {
@@ -83,6 +86,7 @@ class PopupManager {
 
     const newTabButton = document.getElementById('new-tab-button');
     if (newTabButton) {
+      newTabButton.setAttribute('title', getMessage('openInNewTab'));
       newTabButton.addEventListener('click', () => {
         chrome.tabs.create({ url: '/popup.html' });
       });
@@ -120,7 +124,7 @@ class PopupManager {
       const value = siteUrlInput.value.trim();
       const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/;
       if (!urlPattern.test(value)) {
-        this.showMessage(`無効なURLです: ${value}`);
+        this.showMessage(`${getMessage('invalidUrl')}${value}`);
         return;
       }
       const url = new URL(value);
@@ -173,12 +177,12 @@ class PopupManager {
       let siteAccess: string;
       if (result.origins && result.origins.length > 0) {
         if (result.origins.includes("<all_urls>")) {
-          siteAccess = "すべてのサイト";
+          siteAccess = getMessage('allSites');
         } else {
           siteAccess = result.origins.join("<br>");
         }
       } else {
-        siteAccess = "クリックされた場合のみ";
+        siteAccess = getMessage('onClickOnly');
       }
       const siteAccessElement = document.getElementById('site-access');
       if (siteAccessElement) {
@@ -189,7 +193,7 @@ class PopupManager {
     chrome.extension.isAllowedIncognitoAccess((isAllowedAccess) => {
       const incognitoEnabled = document.getElementById('incognito-enabled');
       if (incognitoEnabled) {
-        incognitoEnabled.textContent = isAllowedAccess ? '有効' : '無効';
+        incognitoEnabled.textContent = isAllowedAccess ? getMessage('enabled') : getMessage('disabled');
       }
     });
   }
@@ -198,7 +202,7 @@ class PopupManager {
   private handleConversion(): void {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (chrome.runtime.lastError || !tabs || tabs.length === 0) {
-        this.showMessage(`エラー: アクティブなタブが見つかりません。`);
+        this.showMessage(getMessage('errorNoActiveTab'));
         console.error(chrome.runtime.lastError?.message ?? 'No active tab found.');
         return;
       }
@@ -211,19 +215,19 @@ class PopupManager {
           { action: "get-page-content" },
           (response) => {
             if (chrome.runtime.lastError) {
-              this.showMessage(`エラー: ページにアクセスできません。再読み込みしてください。`);
+              this.showMessage(getMessage('errorNoAccess'));
               console.error(chrome.runtime.lastError.message);
               return;
             }
             if (response && response.html) {
               this.handleHtml(response.html);
             } else {
-              this.showMessage(`エラー: ページからHTMLを取得できませんでした。`);
+              this.showMessage(getMessage('errorNoHtml'));
             }
           }
         );
       } else {
-        this.showMessage(`エラー: 現在のタブではHTMLを取得できません。`);
+        this.showMessage(getMessage('errorCannotGetHtml'));
       }
     });
   }
@@ -238,22 +242,22 @@ class PopupManager {
     // ダウンロードボタンのイベントリスナー
     document.getElementById('download-md-button')?.addEventListener('click', () => {
       if (downloadFile(result, fileName)) {
-        this.showMessage('ダウンロード完了');
+        this.showMessage(getMessage('downloadComplete'));
       } else {
-        this.showMessage('ダウンロードに失敗しました。');
+        this.showMessage(getMessage('downloadFailed'));
       }
     });
   }
 
   private handleHtml(html: string): void {
-    this.showMessage('HTMLを解析中...');
+    this.showMessage(getMessage('parsingHtml'));
     const cleanedHtml = parseHtmlContent(html);
 
-    this.showMessage('Markdownに変換中...');
+    this.showMessage(getMessage('convertingToMarkdown'));
     const markdown = toMarkdown(cleanedHtml);
 
     this.setupPreview(markdown);
-    this.showMessage('変換完了');
+    this.showMessage(getMessage('conversionComplete'));
   }
 
 
