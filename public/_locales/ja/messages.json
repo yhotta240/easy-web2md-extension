@@ -237,22 +237,22 @@
     "message": "無効なURLです: "
   },
   "errorNoActiveTab": {
-    "message": "エラー: アクティブなタブが見つかりません。"
+    "message": "エラー: アクティブなタブが見つかりません．"
   },
   "errorNoAccess": {
-    "message": "エラー: ページにアクセスできません。再読み込みしてください。"
+    "message": "エラー: ページにアクセスできません．再読み込みしてください．"
   },
   "errorNoHtml": {
-    "message": "エラー: ページからHTMLを取得できませんでした。"
+    "message": "エラー: ページからHTMLを取得できませんでした．"
   },
   "errorCannotGetHtml": {
-    "message": "エラー: 現在のタブではHTMLを取得できません。"
+    "message": "エラー: 現在のタブではHTMLを取得できません．"
   },
   "downloadComplete": {
     "message": "ダウンロード完了"
   },
   "downloadFailed": {
-    "message": "ダウンロードに失敗しました。"
+    "message": "ダウンロードに失敗しました．"
   },
   "parsingHtml": {
     "message": "HTMLを解析中..."

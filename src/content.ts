@@ -1,5 +1,3 @@
-console.log("Easy Web Markdown - Content Script");
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "get-page-content") {
     // ページの完全なHTMLを返す

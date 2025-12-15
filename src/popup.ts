@@ -22,9 +22,9 @@ class PopupManager {
     this.fileName = document.getElementById('filename-input') as HTMLInputElement;
     this.filenameCheckbox = document.getElementById('filename-checkbox') as HTMLInputElement;
 
-    // Initialize i18n
+    // i18n 初期化
     initializeI18n();
-    
+
     this.loadInitialState();
     this.addEventListeners();
   }
