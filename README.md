@@ -1,32 +1,19 @@
 # 簡単 Web ページマークダウン化 - Easy Web to Markdown
 
-## 概要 (Overview)
+English version: [README.en.md](README.en.md)
+
+## 概要
 
 閲覧している Web ページをワンクリックで Markdown 形式に変換し，ダウンロードできる Chrome 拡張機能です．
 
-A Chrome extension that converts the web page you are viewing to Markdown format with one click and allows you to download it.
-
-## 言語サポート (Language Support)
-
-この拡張機能は以下の言語に対応しています：
-
-This extension supports the following languages:
-
-- **日本語** (Japanese)
-- **English**
-
-言語はブラウザの設定に基づいて自動的に選択されます．
-
-The language is automatically selected based on your browser settings.
-
-## 特徴 (Features)
+## 特徴
 
 - **ワンクリック変換**: 拡張機能のアイコンをクリックするだけで，表示しているページが Markdown に変換されます．
 - **Markdown プレビュー**: 変換された Markdown をポップアップ内で確認できます．
 - **ファイル名自動設定**: ページのドメイン名を元に，ダウンロードするファイル名を自動で設定します．
 - **簡単ダウンロード**: プレビュー画面の「ダウンロード」ボタンから，`.md`ファイルをすぐに保存できます．
 
-## 使い方 (Usage)
+## 使い方
 
 1.  Markdown に変換したい Web ページを開きます．
 2.  Chrome のツールバーにある「簡単 Web ページマークダウン化」のアイコンをクリックします．
@@ -34,7 +21,16 @@ The language is automatically selected based on your browser settings.
 4.  「ダウンロード」タブでプレビューを確認し，必要に応じてファイル名を変更します．
 5.  「ダウンロード」ボタンをクリックすると，Markdown ファイルが保存されます．
 
-## 開発 (Development)
+## 言語サポート
+
+この拡張機能は以下の言語に対応しています：
+
+- 日本語 (Japanese)
+- 英語 (English)
+
+言語はブラウザの設定に基づいて自動的に選択されます．
+
+## 開発
 
 ### 前提条件
 
@@ -55,7 +51,7 @@ The language is automatically selected based on your browser settings.
 
 ### ビルド
 
-- **通常ビルド**:
+- 通常ビルド:
 
   ```bash
   npm run build
@@ -63,34 +59,12 @@ The language is automatically selected based on your browser settings.
 
   `dist`ディレクトリにビルド成果物が出力されます．
 
-- **監視モードでのビルド**:
+- 監視モードでのビルド:
   ```bash
   npm run watch
   ```
   ファイルの変更を検知して自動的に再ビルドします．
 
-### ローカライゼーション (Localization)
-
-新しい言語を追加する場合：
-
-To add a new language:
-
-1. `public/_locales/` に新しい言語コードのディレクトリを作成します (例: `fr` for French)
-   
-   Create a new directory in `public/_locales/` with the language code (e.g., `fr` for French)
-
-2. `messages.json` ファイルを作成し、既存の `en/messages.json` をテンプレートとして使用します
-   
-   Create a `messages.json` file using `en/messages.json` as a template
-
-3. すべてのメッセージキーを新しい言語に翻訳します
-   
-   Translate all message keys to the new language
-
-4. 拡張機能をビルドしてテストします
-   
-   Build and test the extension
-
-## ライセンス (License)
+## ライセンス
 
 このプロジェクトは [MIT License](LICENSE) のもとで公開されています．
