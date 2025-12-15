@@ -4,6 +4,21 @@
 
 閲覧している Web ページをワンクリックで Markdown 形式に変換し，ダウンロードできる Chrome 拡張機能です．
 
+A Chrome extension that converts the web page you are viewing to Markdown format with one click and allows you to download it.
+
+## 言語サポート (Language Support)
+
+この拡張機能は以下の言語に対応しています：
+
+This extension supports the following languages:
+
+- **日本語** (Japanese)
+- **English**
+
+言語はブラウザの設定に基づいて自動的に選択されます．
+
+The language is automatically selected based on your browser settings.
+
 ## 特徴 (Features)
 
 - **ワンクリック変換**: 拡張機能のアイコンをクリックするだけで，表示しているページが Markdown に変換されます．
@@ -53,6 +68,28 @@
   npm run watch
   ```
   ファイルの変更を検知して自動的に再ビルドします．
+
+### ローカライゼーション (Localization)
+
+新しい言語を追加する場合：
+
+To add a new language:
+
+1. `public/_locales/` に新しい言語コードのディレクトリを作成します (例: `fr` for French)
+   
+   Create a new directory in `public/_locales/` with the language code (e.g., `fr` for French)
+
+2. `messages.json` ファイルを作成し、既存の `en/messages.json` をテンプレートとして使用します
+   
+   Create a `messages.json` file using `en/messages.json` as a template
+
+3. すべてのメッセージキーを新しい言語に翻訳します
+   
+   Translate all message keys to the new language
+
+4. 拡張機能をビルドしてテストします
+   
+   Build and test the extension
 
 ## ライセンス (License)
 

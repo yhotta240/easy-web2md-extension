@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="jp ">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="title"></title>
+  <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body class="container-md pb-3 p-2 " id="popup-body">
+  <div id="header">
+    <div class="d-flex justify-content-between align-items-center p-1">
+      <div class="d-flex justify-content-center align-items-center">
+        <img src="/icons/icon.png" class="my-auto mx-2" alt="message clear button" height="24">
+        <h1 class="my-auto fs-3" id="title-header"></h1>
+      </div>
+      <button type="button" class="btn btn-sm btn-light p-1 me-2" id="new-tab-button" data-i18n-attr="aria-label" data-i18n="openInNewTab"
+        title="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="new-tab-button-icon"
+          class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5" />
+          <path fill-rule="evenodd"
+            d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- メニュータブ -->
+  <ul class="nav nav-underline mb-2 mx-1 my-md-3" id="myTab" role="tablist">
+    <li class="nav-item " role="presentation">
+      <a class="nav-link active p-1 p-md-2" id="download-tabs" data-bs-toggle="tab" href="#download" role="tab"
+        aria-controls="download " aria-selected="true" data-i18n="tabDownload">ダウンロード</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link p-1 p-md-2" id="description-tab" data-bs-toggle="tab" href="#description" role="tab"
+        aria-controls="description" aria-selected="false" data-i18n="tabDescription">概要</a>
+    </li>
+    <li class="nav-item " role="presentation">
+      <a class="nav-link p-1 p-md-2" id="document-tab" data-bs-toggle="tab" href="#document" role="tab"
+        aria-controls="document" aria-selected="false" data-i18n="tabDocument">ドキュメント</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link py-1 p-md-2" id="version-tab" data-bs-toggle="tab" href="#version" role="tab"
+        aria-controls="version" aria-selected="false" data-i18n="tabVersion">バージョン</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link  p-1 p-md-2" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info"
+        aria-selected="false" data-i18n="tabInfo">情報</a>
+    </li>
+  </ul>
+
+
+  <div class="tab-content" id="myTabContent">
+
+    <!-- ダウンロード -->
+    <div class="tab-pane fade mt-2 mx-2 show active" id="download" role="tabpanel" style="margin-bottom: 180px;"
+      aria-labelledby="download">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <p class="m-0 fw-bold" data-i18n="urlLabel">URL</p>
+          <div class="input-group-sm input-group relative">
+            <span id="url-clear-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x"
+                viewBox="0 0 16 16">
+                <path
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+              </svg>
+            </span>
+            <input class="form-control form-control-sm" type="text" data-i18n-attr="placeholder" data-i18n="urlPlaceholder"
+              aria-label=".form-control-sm example" id="site-url-input" disabled>
+            <button type="button" id="site-url-button" class="btn btn-outline-secondary btn-sm " data-i18n="currentUrlButton">現在のURL</button>
+          </div>
+
+          <p class="m-0 fw-bold mt-2" data-i18n="filenameLabel">ファイル名:</p>
+          <div class="relative">
+            <span id="filename-clear-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x"
+                viewBox="0 0 16 16">
+                <path
+                  d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+              </svg>
+            </span>
+            <input class="form-control form-control-sm" type="text" data-i18n-attr="placeholder" data-i18n="filenamePlaceholder"
+              aria-label=".form-control-sm example" id="filename-input">
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="filename-checkbox">
+            <label class="form-check-label" for="filename-checkbox" data-i18n="rememberFilename">
+              ファイル名を記憶する
+            </label>
+          </div>
+
+        </li>
+        <li id="markdown-preview" class="list-group-item ">
+          <p class="m-0 fw-bold my-2" data-i18n="markdownPreview">マークダウン表示</p>
+          <div data-i18n="webPageNotFound">WEBページが見つかりません</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 概要 -->
+    <div class="tab-pane fade mt-2 mx-2" id="description" role="tabpanel" style="margin-bottom: 200px;"
+      aria-labelledby="description-tab">
+      <div>
+        <h1 class="fs-5" data-i18n="descriptionTitle">概要</h1>
+        <p data-i18n="descriptionText">閲覧しているWebページをワンクリックでMarkdown形式に変換し，ダウンロードできるChrome拡張機能です．</p>
+        <p class="my-1 fw-bold" data-i18n="mainFeatures">主な特徴:</p>
+        <ul class="mt-1">
+          <li><strong data-i18n="featureOneClick">ワンクリック変換</strong>: <span data-i18n="featureOneClickDesc">拡張機能のアイコンをクリックするだけで，表示しているページがMarkdownに変換されます．</span></li>
+          <li><strong data-i18n="featurePreview">Markdownプレビュー</strong>: <span data-i18n="featurePreviewDesc">変換されたMarkdownをポップアップ内で確認できます．</span></li>
+          <li><strong data-i18n="featureAutoFilename">ファイル名自動設定</strong>: <span data-i18n="featureAutoFilenameDesc">ページのドメイン名を元に，ダウンロードするファイル名を自動で設定します．</span></li>
+          <li><strong data-i18n="featureEasyDownload">簡単ダウンロード</strong>: <span data-i18n-html="featureEasyDownloadDesc">プレビュー画面の「ダウンロード」ボタンから，<code>.md</code>ファイルをすぐに保存できます．</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ドキュメント -->
+    <div class="tab-pane fade mt-2 mx-2" id="document" role="tabpanel" style="margin-bottom: 200px;"
+      aria-labelledby="document-tab">
+      <div class="accordion" id="accordion-word">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseInstall" aria-expanded="false" aria-controls="collapseInstall" data-i18n="documentInstall">
+              インストール
+            </button>
+          </h2>
+          <div id="collapseInstall" class="accordion-collapse collapse" data-bs-parent="#accordion-word">
+            <div class="accordion-body p-3">
+              <p data-i18n="documentInstallText">
+                Chromeウェブストアから本拡張機能をインストールします．
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUsage"
+              aria-expanded="true" aria-controls="collapseUsage" data-i18n="documentUsage">
+              使い方
+            </button>
+          </h2>
+          <div id="collapseUsage" class="accordion-collapse collapse show" data-bs-parent="#accordion-word">
+            <div class="accordion-body p-3">
+              <ol>
+                <li data-i18n="usageStep1">Markdownに変換したいWebページを開きます．</li>
+                <li data-i18n="usageStep2">Chromeのツールバーにある拡張機能のアイコンをクリックします．</li>
+                <li data-i18n="usageStep3">ポップアップが開かれ，自動的にページの内容がMarkdownに変換されます．</li>
+                <li data-i18n="usageStep4">「ダウンロード」タブでプレビューを確認し，必要に応じてファイル名を変更します．</li>
+                <li data-i18n="usageStep5">「ダウンロード」ボタンをクリックすると，Markdownファイルが保存されます．</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- バージョン情報 -->
+    <div class="tab-pane fade mt-2 mx-2" id="version" role="tabpanel" style="margin-bottom: 200px;"
+      aria-labelledby="version-tab">
+      <ul class="list-group list-group-flush">
+        <h5 class="pt-3 ps-2 mb-2" data-i18n="updateHistory">更新履歴</h5>
+        <li class="list-group-item">
+          <strong data-i18n="versionBeta1">v0.3.0-beta.1</strong>
+          <ul class="small mt-1">
+            <li data-i18n="versionBeta1Desc1">ポップアップUIの改善と整理</li>
+            <li data-i18n="versionBeta1Desc2">アイコンを更新</li>
+            <li data-i18n="versionBeta1Desc3">ドキュメントを追加・更新</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 詳細情報 -->
+    <div class="tab-pane fade mt-2 mx-2" id="info" role="tabpanel" style="margin-bottom: 200px;"
+      aria-labelledby="info-tab">
+      <ul class="list-group list-group-flush">
+        <h5 class="pt-3 ps-2 mb-2" data-i18n="infoDetails">詳細</h5>
+
+        <li class="list-group-item">
+          <ul>
+            <li>
+              <a class="" href="https://chromewebstore.google.com/" id="store_link" data-i18n="linkStorePage">
+                ストアページに移動
+              </a>
+            </li>
+            <li>
+              <a href="" id="extension_link" data-i18n="linkManageExtension">この拡張機能を管理する</a>
+            </li>
+            <li>
+              <a href="https://forms.gle/qkaaa2E49GQ5QKMT8" id="issue-link" data-i18n="linkReportIssue">問題を報告する</a>
+            </li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoName">名前:</p>
+          <p class="m-0" id="extension-name"></p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoDescription">説明: </p>
+
+          <p class="m-0" id="extension-description"></p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoVersion">バージョン: </p>
+          <p class="m-0" id="extension-version"></p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoId">ID: </p>
+          <p class="m-0" id="extension-id"></p>
+        </li>
+        <li class="list-group-item">
+          <p data-i18n="infoPermissions">権限</p>
+        </li>
+        <li class="list-group-item">
+          <p data-i18n="infoSiteAccess">サイトへのアクセス:</p>
+          <p id="permission-info" data-i18n="siteAccessDescription">アクセスしたウェブサイト上にある自分の全データの読み取りと変更をこの拡張機能に許可します．</p>
+          <span id="site-access" data-i18n="siteAccessChecking">Checking...</span>
+        </li>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoIncognito">シークレット モードでの実行を許可する: </p>
+          <p class="m-0" id="incognito-enabled"></p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoLanguage">言語: </p>
+          <p class="m-0" data-i18n="languageJapanese">日本語 </p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoProvider">提供元: </p>
+          <p class="m-0">yhotta240</p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoDeveloper">デベロッパー: </p>
+          <p class="m-0">yhotta240@gmail.com </p>
+        </li>
+        <li class="list-group-item">
+          <p class="m-0" data-i18n="infoGitHub">GitHub: </p>
+          <a class="m-0" id="github-link"
+            href="https://github.com/yhotta240/easy-web2md-extension">https://github.com/yhotta240/easy-web2md-extension</a>
+          </a>
+        </li>
+        <li class="list-group-item">
+        </li>
+      </ul>
+      <div class="ps-0 " style="margin-bottom: 180px;">
+        <h5 class="ps-1" data-i18n="privacyTitle">プライバシー</h5>
+        <p class="ps-3" data-i18n="privacyStatement">お客様のデータを収集または使用しないことを表明しています．</p>
+        <p class="ps-3" data-i18n="privacyDeclaration">お客様のデータについて以下を宣言します．</p>
+        <div class="m-2">
+          <ul>
+            <li data-i18n="privacyPoint1">
+              承認されている以外の用途で第三者に販売しないこと
+            </li>
+            <li data-i18n="privacyPoint2">
+              アイテムの中心機能と関係のない目的で使用または転送しないこと
+            </li>
+            <li data-i18n="privacyPoint3">
+              信用力を判断する目的または融資目的で使用または転送しないこと
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- 固定フッターとしての開閉パネル -->
+  <div class="bg-light position-fixed bottom-0 end-0 border-top w-100 " style="z-index: 2000; ">
+    <!-- ドラッグしてサイズ変更 -->
+    <div class="w-100 position-relative " id="resizer" style="cursor: n-resize; height: 5px;"></div>
+    <div class=" ">
+      <!-- タブメニュー -->
+      <div class="d-flex justify-content-between  mx-1 " id="tab-menu">
+        <ul class="nav nav-underline px-2" id="myTab" role="tablist">
+          <li class="nav-item " role="presentation">
+            <a class="nav-link active p-0" id="settings-tab" data-bs-toggle="tab" href="#messagePanel" role="tab"
+              aria-controls="settings " aria-selected="true" data-i18n="outputTab">出力</a>
+          </li>
+        </ul>
+        <div class="d-flex me-1">
+          <!-- クリアボタン -->
+          <button type="button" class="btn btn-sm btn-light p-0 me-1" id="clear-button" data-i18n-attr="title" data-i18n="clearMessage"
+            style="width: 20px; height: 20px; display: flex; justify-content: center; align-items: center;">
+            <img src="../icons/list_clear.png" alt="message clear button" height="20" class="img-fluid">
+          </button>
+          <!-- 最大化ボタン -->
+          <button type="button" class="btn btn-sm btn-light p-0 me-1" id="maximize-button" data-i18n-attr="title" data-i18n="maximize"
+            style="width: 20px; height: 20px; display: flex; justify-content: center; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5m-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5" />
+            </svg>
+          </button>
+          <!-- 最小化ボタン -->
+          <button type="button" class="btn btn-sm btn-light p-0 me-1" id="minimize-button" data-i18n-attr="title" data-i18n="minimize"
+            style="width: 20px; height: 20px; display: flex; justify-content: center; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5M8 6a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 12.293V6.5A.5.5 0 0 1 8 6" />
+            </svg>
+          </button>
+          <!-- パネルの表示ボタン -->
+          <button type="button" class="btn btn-sm p-0 btn-light" id="panel-button" data-i18n-attr="title" data-i18n="showPanel"
+            style="width: 20px; height: 20px; display: flex; justify-content: center; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 -0.5 16 16" fill="none" stroke="#000000"
+              stroke-linecap="round" stroke-linejoin="round" id="Panel-Bottom-Open--Streamline-Lucide" height="16"
+              width="16">
+              <desc>Panel Bottom Open Streamline Icon: https://streamlinehq.com</desc>
+              <path
+                d="M3.125 1.875h8.75s1.25 0 1.25 1.25v8.75s0 1.25 -1.25 1.25H3.125s-1.25 0 -1.25 -1.25V3.125s0 -1.25 1.25 -1.25"
+                stroke-width="1"></path>
+              <path d="M1.875 9.375h11.25" stroke-width="1"></path>
+              <path d="m5.625 6.25 1.875 -1.875 1.875 1.875" stroke-width="1"></path>
+            </svg>
+          </button>
+          <!-- 閉じる -->
+          <button type="button" class="btn btn-sm p-0 btn-light" id="close-button" data-i18n-attr="title" data-i18n="close"
+            style="width: 20px; height: 20px; display: flex; justify-content: center; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x"
+              viewBox="0 0 16 16">
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- メッセージ -->
+      <div class="tab-content" id="panel" style="height: 0px;">
+        <div id="messagePanel" class="bg-light text-dark p-1 overflow-auto tab-pane fade show active h-100"
+          role="tabpanel" aria-labelledby="message-tab">
+          <div id="message" class="h-100" style="border: 1px solid #ccc; padding: 10px;">
+          </div>
+        </div>
+        <div id="convertPanel" class="bg-light text-dark p-1 overflow-auto tab-pane fade  h-100" role="tabpanel"
+          aria-labelledby="convert-tab">
+          <div id="convert" class="h-100" style="border: 1px solid #ccc; padding: 10px;">
+
+          </div>
+        </div>
+        <div id="infoPanel" class="bg-light text-dark p-1 overflow-auto tab-pane fade h-100" role="tabpanel"
+          aria-labelledby="info-tab">
+          <p>情報</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- スクリプトのリンク -->
+  <script src="libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="popup.js"></script>
+</body>

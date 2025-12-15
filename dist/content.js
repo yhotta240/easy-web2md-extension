@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("Easy Web Markdown - Content Script"),chrome.runtime.onMessage.addListener((e,t,n)=>("get-page-content"===e.action&&n({html:document.documentElement.outerHTML}),!0))})();
