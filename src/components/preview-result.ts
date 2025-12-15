@@ -1,3 +1,5 @@
+import { getMessage } from '../utils/i18n';
+
 export function renderPreviewResult(result: string, fileName: string): void {
   const markdownPreview = document.getElementById('markdown-preview');
   if (!markdownPreview) return;
@@ -7,7 +9,7 @@ export function renderPreviewResult(result: string, fileName: string): void {
 
   // 結果表示用のUIを生成 (Bootstrap適用)
   markdownPreview.innerHTML = `
-      <p class="m-0 fw-bold my-2">マークダウン表示</p>
+      <p class="m-0 fw-bold my-2">${getMessage('markdownPreview')}</p>
       <div class="card">
         <div class="card-header p-2">
           <div class="d-flex justify-content-between align-items-center">
@@ -19,8 +21,8 @@ export function renderPreviewResult(result: string, fileName: string): void {
               <span class="fw-bold text-truncate" title="${fileName}.md">${fileName}.md</span>
             </div>
             <div class="d-flex align-items-center flex-shrink-0">
-              <span class="badge bg-light text-dark me-2">${fileSizeKB} KB / ${charCount} 文字</span>
-              <button id="download-md-button" class="btn btn-primary btn-sm me-1">ダウンロード</button>
+              <span class="badge bg-light text-dark me-2">${fileSizeKB} KB / ${charCount} ${getMessage('characters')}</span>
+              <button id="download-md-button" class="btn btn-primary btn-sm me-1">${getMessage('downloadButton')}</button>
               <button id="accordion-toggle" class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-content" aria-expanded="false" aria-controls="accordion-content">
                 ▼
               </button>
