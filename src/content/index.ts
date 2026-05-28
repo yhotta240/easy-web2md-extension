@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.action === "get-page-content") {
     // ページの完全なHTMLを返す
     sendResponse({ html: document.documentElement.outerHTML });

@@ -6,9 +6,9 @@
  */
 export function downloadFile(content: string, fileName: string): boolean {
   try {
-    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.download = `${fileName}.md`;
     a.href = url;
     document.body.appendChild(a);
@@ -17,7 +17,7 @@ export function downloadFile(content: string, fileName: string): boolean {
     URL.revokeObjectURL(url);
     return true;
   } catch (error) {
-    console.error('ダウンロード中にエラーが発生しました:', error);
+    console.error("ダウンロード中にエラーが発生しました:", error);
     return false;
   }
 }
