@@ -1,7 +1,7 @@
-import { getMessage } from '../utils/i18n';
+import { getMessage } from "../utils/i18n";
 
 export function renderPreviewResult(result: string, fileName: string): void {
-  const markdownPreview = document.getElementById('markdown-preview');
+  const markdownPreview = document.getElementById("markdown-preview");
   if (!markdownPreview) return;
 
   const charCount = result.length;
@@ -9,7 +9,7 @@ export function renderPreviewResult(result: string, fileName: string): void {
 
   // 結果表示用のUIを生成 (Bootstrap適用)
   markdownPreview.innerHTML = `
-      <p class="m-0 fw-bold my-2">${getMessage('markdownPreview')}</p>
+      <p class="m-0 fw-bold my-2">${getMessage("markdownPreview")}</p>
       <div class="card">
         <div class="card-header p-2">
           <div class="d-flex justify-content-between align-items-center">
@@ -21,8 +21,8 @@ export function renderPreviewResult(result: string, fileName: string): void {
               <span class="fw-bold text-truncate" title="${fileName}.md">${fileName}.md</span>
             </div>
             <div class="d-flex align-items-center flex-shrink-0">
-              <span class="badge bg-light text-dark me-2">${fileSizeKB} KB / ${charCount} ${getMessage('characters')}</span>
-              <button id="download-md-button" class="btn btn-primary btn-sm me-1">${getMessage('downloadButton')}</button>
+              <span class="badge bg-light text-dark me-2">${fileSizeKB} KB / ${charCount} ${getMessage("characters")}</span>
+              <button id="download-md-button" class="btn btn-primary btn-sm me-1">${getMessage("downloadButton")}</button>
               <button id="accordion-toggle" class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-content" aria-expanded="false" aria-controls="accordion-content">
                 ▼
               </button>
@@ -38,16 +38,16 @@ export function renderPreviewResult(result: string, fileName: string): void {
     `;
 
   // マークダウンの内容を安全にセット
-  const codeElement = document.getElementById('markdown-code');
+  const codeElement = document.getElementById("markdown-code");
   if (codeElement) codeElement.textContent = result;
 
   // アコーディオンの開閉に合わせて矢印を変更するイベントリスナー
-  const accordionToggle = document.getElementById('accordion-toggle');
-  const accordionContent = document.getElementById('accordion-content');
-  accordionContent?.addEventListener('show.bs.collapse', () => {
-    if (accordionToggle) accordionToggle.textContent = '▲';
+  const accordionToggle = document.getElementById("accordion-toggle");
+  const accordionContent = document.getElementById("accordion-content");
+  accordionContent?.addEventListener("show.bs.collapse", () => {
+    if (accordionToggle) accordionToggle.textContent = "▲";
   });
-  accordionContent?.addEventListener('hide.bs.collapse', () => {
-    if (accordionToggle) accordionToggle.textContent = '▼';
+  accordionContent?.addEventListener("hide.bs.collapse", () => {
+    if (accordionToggle) accordionToggle.textContent = "▼";
   });
 }

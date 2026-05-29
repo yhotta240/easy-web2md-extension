@@ -16,14 +16,14 @@ export function initializeI18n(): void {
   document.documentElement.lang = chrome.i18n.getUILanguage();
 
   // `data-i18n` 属性を持つ要素を取得
-  const elements = document.querySelectorAll('[data-i18n]');
+  const elements = document.querySelectorAll("[data-i18n]");
   elements.forEach((element) => {
-    const key = element.getAttribute('data-i18n');
+    const key = element.getAttribute("data-i18n");
     if (key) {
       const message = getMessage(key);
       if (message) {
         // `data-i18n-attr` があればテキストではなく指定属性に設定
-        const attr = element.getAttribute('data-i18n-attr');
+        const attr = element.getAttribute("data-i18n-attr");
         if (attr) {
           element.setAttribute(attr, message);
         } else {
@@ -37,9 +37,9 @@ export function initializeI18n(): void {
 
   // `data-i18n-html` 属性を持つ要素を取得（innerHTML 用）
   // 注: ロケールファイル内の信頼できる内容のみで使用してください
-  const htmlElements = document.querySelectorAll('[data-i18n-html]');
+  const htmlElements = document.querySelectorAll("[data-i18n-html]");
   htmlElements.forEach((element) => {
-    const key = element.getAttribute('data-i18n-html');
+    const key = element.getAttribute("data-i18n-html");
     if (key) {
       const message = getMessage(key);
       if (message) {
