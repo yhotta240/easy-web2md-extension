@@ -149,9 +149,15 @@ svg {
 }
 
 .relative span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  right: 5.5rem;
   z-index: 1000;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
 }
 
 .relative span svg {
@@ -159,19 +165,16 @@ svg {
   border-radius: 3px;
 }
 
-.relative #api-clear-button {
-  position: absolute;
-  right: 0.5rem;
-  z-index: 1000;
+.relative #url-clear-button {
+  right: 5.3rem;
 }
 
 .relative #filename-clear-button {
-  position: absolute;
   right: 0.5rem;
-  z-index: 1000;
 }
 
-.relative span svg:hover {
+.relative span:hover {
   cursor: pointer;
-  background-color: #dddddd;
+  background-color: rgba(108, 117, 125, 0.15);
+  border-radius: 3px;
 }
