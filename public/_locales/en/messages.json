@@ -236,17 +236,17 @@
   "invalidUrl": {
     "message": "Invalid URL: "
   },
+  "warningNoAccess": {
+    "message": "Warning: Cannot access page. Please reload."
+  },
+  "warningCannotGetHtml": {
+    "message": "Warning: Cannot get HTML from current tab."
+  },
   "errorNoActiveTab": {
     "message": "Error: No active tab found."
   },
-  "errorNoAccess": {
-    "message": "Error: Cannot access page. Please reload."
-  },
   "errorNoHtml": {
     "message": "Error: Could not retrieve HTML from page."
-  },
-  "errorCannotGetHtml": {
-    "message": "Error: Cannot get HTML from current tab."
   },
   "downloadComplete": {
     "message": "Download complete"

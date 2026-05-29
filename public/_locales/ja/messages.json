@@ -236,17 +236,17 @@
   "invalidUrl": {
     "message": "無効なURLです: "
   },
+  "warningNoAccess": {
+    "message": "警告: ページにアクセスできません．再読み込みしてください．"
+  },
+  "warningCannotGetHtml": {
+    "message": "警告: 現在のタブではHTMLを取得できません．"
+  },
   "errorNoActiveTab": {
     "message": "エラー: アクティブなタブが見つかりません．"
   },
-  "errorNoAccess": {
-    "message": "エラー: ページにアクセスできません．再読み込みしてください．"
-  },
   "errorNoHtml": {
     "message": "エラー: ページからHTMLを取得できませんでした．"
-  },
-  "errorCannotGetHtml": {
-    "message": "エラー: 現在のタブではHTMLを取得できません．"
   },
   "downloadComplete": {
     "message": "ダウンロード完了"

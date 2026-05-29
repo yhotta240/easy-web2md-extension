@@ -221,7 +221,7 @@ export class PopupManager {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const activeTab = tabs[0];
     if (!activeTab?.id || !activeTab.url?.startsWith("http")) {
-      this.showLog(getMessage("errorCannotGetHtml"), "error");
+      this.showLog(getMessage("warningCannotGetHtml"), "warn");
       return;
     }
 
@@ -237,7 +237,7 @@ export class PopupManager {
 
       this.handleHtml(responseContent.html);
     } catch {
-      this.showLog(getMessage("errorNoAccess"), "error");
+      this.showLog(getMessage("warningNoAccess"), "warn");
     }
   }
 
