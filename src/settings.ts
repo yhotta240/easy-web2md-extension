@@ -1,7 +1,9 @@
 export type Settings = {
-  // notifications?: boolean;
-  // fontSize?: number;
-  [key: string]: unknown;
+  fileName: string;
+  saveFilename: boolean;
 };
 
-export const DEFAULT_SETTINGS: Settings = {};
+export const DEFAULT_SETTINGS: Settings = {
+  fileName: "webpage",
+  saveFilename: false,
+};

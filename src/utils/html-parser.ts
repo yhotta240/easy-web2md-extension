@@ -23,9 +23,13 @@ export function parseHtmlContent(html: string): string {
   ];
 
   // .svg 画像を削除
-  doc.querySelectorAll('img[src$=".svg"]').forEach((el) => el.remove());
+  doc.querySelectorAll('img[src$=".svg"]').forEach((el) => {
+    el.remove();
+  });
 
-  doc.querySelectorAll(selectorsToRemove.join(",")).forEach((el) => el.remove());
+  doc.querySelectorAll(selectorsToRemove.join(",")).forEach((el) => {
+    el.remove();
+  });
   if (!doc.body) {
     return "";
   }

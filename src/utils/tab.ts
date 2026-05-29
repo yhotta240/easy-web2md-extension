@@ -45,3 +45,17 @@ export async function reloadTargetTabs(targetUrls: string[]): Promise<void> {
     console.error("ターゲットタブのリロードに失敗しました:", error);
   }
 }
+
+/**
+ * アクティブなブラウザタブのURLを取得する
+ */
+export async function getActiveTabUrl(): Promise<{ baseUrl: string; hostname: string; url: URL }> {
+  const queryOptions = { active: true, currentWindow: true };
+  const tabs = await chrome.tabs.query(queryOptions);
+  if (tabs.length === 0) throw new Error("アクティブなタブが見つかりません");
+  if (!tabs[0].url) throw new Error("アクティブなタブのURLが取得できません");
+  const url = new URL(tabs[0].url);
+  const baseUrl = url.origin;
+  const hostname = url.hostname;
+  return { baseUrl, hostname, url };
+}
