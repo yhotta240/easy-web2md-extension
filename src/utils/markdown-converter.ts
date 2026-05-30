@@ -13,5 +13,37 @@ export async function toMarkdown(html: string): Promise<string> {
     .use(remarkStringify) // Markdown 文字列として出力
     .process(html);
 
-  return String(result);
+  const raw = String(result);
+  return sanitizeMarkdown(raw).trim();
+}
+
+function sanitizeMarkdown(md: string): string {
+  // 改行を統一
+  let s = md.replace(/\r\n/g, "\n");
+
+  // 不要な要素を削除
+  s = s.replace(/\[\s*\]\(\s*\)/g, "");
+  s = s.replace(/<!--\s*\$\s*-->/g, "");
+  s = s.replace(/<!--\s*\/\$\s*-->/g, "");
+
+  // コードブロック外の1文字だけの行を削除
+  const lines = s.split("\n");
+  const out: string[] = [];
+  let inCode = false;
+
+  for (const line of lines) {
+    if (/^```/.test(line)) {
+      inCode = !inCode;
+      out.push(line);
+      continue;
+    }
+
+    if (!inCode && line.trim().length === 1) continue;
+    out.push(line);
+  }
+
+  // 連続改行を整理
+  s = out.join("\n").replace(/\n{3,}/g, "\n\n");
+
+  return s;
 }
