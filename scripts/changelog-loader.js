@@ -2,7 +2,8 @@ const matter = require('gray-matter');
 const { marked } = require('marked');
 const sanitizeHtml = require('sanitize-html');
 
-const versionRegex = /(\d+\.\d+\.\d+)/;
+// betaバージョンも含めてバージョン番号を抽出
+const versionRegex = /(\d+\.\d+\.\d+(?:-beta\.\d+)?)/;
 const dateRegex = /-?\s*(\d{4}-\d{2}-\d{2})/;
 
 function toVersionMeta(data) {
@@ -30,7 +31,11 @@ function parseVersionItems(fullHtml) {
     if (!version) continue;
 
     const date = (headerText.match(dateRegex) || [])[1] || '';
-    const [major, minor, patch] = version.split('.').map(Number);
+    // betaバージョンも含まれるため，単純な数値比較ではなく，バージョン番号を分割して比較する
+    const [major, minor, patch] = version.split('.').map(part => {
+      const numPart = parseInt(part, 10);
+      return isNaN(numPart) ? 0 : numPart;
+    });
     const order = major * 1000000 + minor * 1000 + patch;
 
     items.push({
