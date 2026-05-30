@@ -25,6 +25,7 @@ function sanitizeMarkdown(md: string): string {
   s = s.replace(/\[\s*\]\(\s*\)/g, "");
   s = s.replace(/<!--\s*\$\s*-->/g, "");
   s = s.replace(/<!--\s*\/\$\s*-->/g, "");
+  s = s.replace(/<!---->/g, "");
 
   // コードブロック外の1文字だけの行を削除
   const lines = s.split("\n");
