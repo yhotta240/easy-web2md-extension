@@ -1,70 +1,49 @@
-import TurndownService from "turndown";
-import { gfm } from "turndown-plugin-gfm";
+import rehypeParse from "rehype-parse";
+import rehypeRemark from "rehype-remark";
+import remarkGfm from "remark-gfm";
+import remarkStringify from "remark-stringify";
+import { unified } from "unified";
 
-const turndownService = new TurndownService({
-  headingStyle: "atx",
-  codeBlockStyle: "fenced",
-  hr: "---",
-  bulletListMarker: "-",
-});
+export async function toMarkdown(html: string): Promise<string> {
+  // HTML を Markdown へ変換
+  const result = await unified()
+    .use(rehypeParse) // HTML 文字列を解析
+    .use(rehypeRemark) // HTML 形式から Markdown 形式へ変換
+    .use(remarkGfm) // GFM（テーブルなど）の記法に対応
+    .use(remarkStringify) // Markdown 文字列として出力
+    .process(html);
 
-// GFMプラグインを適用
-turndownService.use(gfm);
+  const raw = String(result);
+  return sanitizeMarkdown(raw).trim();
+}
 
-// 空リンクを削除
-turndownService.addRule("removeEmptyLinks", {
-  filter: (node) => node.nodeName === "A" && !node.textContent.trim(),
-  replacement: () => "",
-});
+function sanitizeMarkdown(md: string): string {
+  // 改行を統一
+  let s = md.replace(/\r\n/g, "\n");
 
-// 見出しの前後に改行を追加
-turndownService.addRule("headings", {
-  filter: ["h1", "h2", "h3", "h4", "h5", "h6"],
-  replacement: (content, node) => {
-    const hLevel = Number(node.nodeName.charAt(1));
-    const hPrefix = "#".repeat(hLevel);
-    return `\n\n${hPrefix} ${content.trim()}\n\n`;
-  },
-});
+  // 不要な要素を削除
+  s = s.replace(/\[\s*\]\(\s*\)/g, "");
+  s = s.replace(/<!--\s*\$\s*-->/g, "");
+  s = s.replace(/<!--\s*\/\$\s*-->/g, "");
 
-// コードブロック対応 (言語指定あり)
-turndownService.addRule("fencedCodeBlock", {
-  filter: (node, options) =>
-    options.codeBlockStyle === "fenced" &&
-    node.nodeName === "PRE" &&
-    node.firstChild?.nodeName === "CODE",
-  replacement: (_content, node) => {
-    const codeNode = node.firstChild as HTMLElement;
-    const language = (codeNode.getAttribute("class") || "").replace(/language-/, "");
-    const code = codeNode.textContent?.trim() || "";
-    return `\n\n\`\`\`${language || ""}\n${code}\n\`\`\`\n\n`;
-  },
-});
+  // コードブロック外の1文字だけの行を削除
+  const lines = s.split("\n");
+  const out: string[] = [];
+  let inCode = false;
 
-// figure/figcaption
-turndownService.addRule("figure", {
-  filter: "figure",
-  replacement: (content) => `\n\n${content.trim()}\n\n`,
-});
-turndownService.addRule("figcaption", {
-  filter: "figcaption",
-  replacement: (content) => `\n_${content.trim()}_\n`,
-});
+  for (const line of lines) {
+    if (/^```/.test(line)) {
+      inCode = !inCode;
+      out.push(line);
+      continue;
+    }
 
-// リストの前後の改行を整える
-turndownService.addRule("lists", {
-  filter: ["ul", "ol"],
-  replacement: (content) => `\n${content.trim()}\n`,
-});
+    if (!inCode && line.trim().length === 1) continue;
+    out.push(line);
+  }
 
-// table前後の余分な改行を削除
-turndownService.addRule("tables", {
-  filter: "table",
-  replacement: (content) => `\n${content.trim()}\n`,
-});
+  // 連続改行を整理
+  s = out.join("\n").replace(/\n{3,}/g, "\n\n");
 
-export function toMarkdown(html: string): string {
-  const markdown = turndownService.turndown(html);
-  // 3つ以上連続する改行を2つにまとめ、先頭・末尾の空白除去
-  return markdown.replace(/\n{3,}/g, "\n\n").trim();
+  return s;
 }

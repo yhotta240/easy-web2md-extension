@@ -275,7 +275,7 @@ export class PopupManager {
     const cleanedHtml = parseHtmlContent(html);
 
     await this.showLog(getMessage("convertingToMarkdown"));
-    const markdown = toMarkdown(cleanedHtml);
+    const markdown = await toMarkdown(cleanedHtml);
 
     this.setupPreview(markdown);
     await this.showLog(
