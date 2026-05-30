@@ -22,7 +22,9 @@ export function renderPreviewResult(result: string, fileName: string): void {
         </div>
 
         <div class="d-flex align-items-center gap-2">
-          <button id="download-md-button" class="btn btn-primary btn-sm">${getMessage("downloadButton")}</button>
+          <button id="download-md-button" class="btn btn-primary btn-sm">
+            <i class="bi bi-download"></i>
+          </button>
           <button id="accordion-toggle" class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-content" aria-expanded="false" aria-controls="accordion-content">
             ▼
           </button>
