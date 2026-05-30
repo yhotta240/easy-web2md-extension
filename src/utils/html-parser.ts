@@ -9,6 +9,7 @@ export function parseHtmlContent(html: string): string {
     "noscript",
     "meta",
     "head",
+    "button",
     "link",
     "iframe", // 埋め込みコンテンツ
     "svg", // アイコンなど
