@@ -110,6 +110,12 @@
   "updateHistory": {
     "message": "更新履歴"
   },
+  "noUpdateHistory": {
+    "message": "更新履歴がありません"
+  },
+  "latest": {
+    "message": "最新"
+  },
   "versionBeta1": {
     "message": "v0.3.0-beta.1"
   },
@@ -327,6 +333,9 @@
     "message": "不明"
   }
   ,
+  "noDocuments": {
+    "message": "ドキュメントがありません"
+  },
   "extensionInstalled": {
     "message": "拡張機能がインストールされました"
   },

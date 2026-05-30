@@ -1,6 +1,9 @@
-import overviewDoc from "../../../docs/overview.md";
-import tutorialDoc from "../../../docs/tutorial.md";
+import overviewDocEn from "../../../docs/en/overview.md";
+import tutorialDocEn from "../../../docs/en/tutorial.md";
+import overviewDocJa from "../../../docs/overview.md";
+import tutorialDocJa from "../../../docs/tutorial.md";
 import { escapeHtml } from "../../utils/html";
+import { getMessage } from "../../utils/i18n";
 import type { DocItem } from "../types";
 
 const MARKDOWN_CLASS_MAP: Record<string, string> = {
@@ -23,6 +26,10 @@ export function setupDocumentTab(): void {
   const documentTab = document.getElementById("document");
   if (!documentTab) return;
 
+  const isJapanese = navigator.language.startsWith("ja");
+  const overviewDoc = isJapanese ? overviewDocJa : overviewDocEn;
+  const tutorialDoc = isJapanese ? tutorialDocJa : tutorialDocEn;
+
   const allDocs: DocItem[] = [overviewDoc, tutorialDoc].sort(
     (a, b) => a.metadata.order - b.metadata.order,
   );
@@ -30,7 +37,8 @@ export function setupDocumentTab(): void {
   const visibleDocs = allDocs.filter((doc) => doc.metadata.visible !== false);
 
   if (visibleDocs.length === 0) {
-    documentTab.innerHTML = '<p class="text-center text-muted mt-5">ドキュメントがありません</p>';
+    const msg = getMessage("noDocuments") || "ドキュメントがありません";
+    documentTab.innerHTML = `<p class="text-center text-muted mt-5">${escapeHtml(msg)}</p>`;
     return;
   }
 

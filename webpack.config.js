@@ -48,7 +48,7 @@ module.exports = {
         }
       },
       {
-        test: /CHANGELOG\.md$/,
+        test: /CHANGELOG(\..+)?\.md$/,
         type: 'javascript/auto',
         use: [
           {
@@ -58,7 +58,7 @@ module.exports = {
       },
       {
         test: /\.md$/,
-        exclude: /CHANGELOG\.md$/,
+        exclude: /CHANGELOG(\..+)?\.md$/,
         type: 'javascript/auto',
         use: [
           {

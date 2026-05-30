@@ -1,5 +1,7 @@
-import changeLog from "../../../CHANGELOG.md";
+import changeLogEn from "../../../CHANGELOG.en.md";
+import changeLogJa from "../../../CHANGELOG.md";
 import { escapeHtml } from "../../utils/html";
+import { getMessage } from "../../utils/i18n";
 import type { VersionItem } from "../types";
 
 const MARKDOWN_CLASS_MAP: Record<string, string> = {
@@ -22,10 +24,13 @@ export function setupVersionTab(_currentVersion: string): void {
   const versionTab = document.getElementById("version");
   if (!versionTab) return;
 
-  const allVersions: VersionItem[] = changeLog.sort((a, b) => b.metadata.order - a.metadata.order);
+  const isJapanese = navigator.language.startsWith("ja");
+  const changeLog: VersionItem[] = isJapanese ? changeLogJa : changeLogEn;
+  const allVersions = changeLog.sort((a, b) => b.metadata.order - a.metadata.order);
 
   if (allVersions.length === 0) {
-    versionTab.innerHTML = '<p class="text-center text-muted mt-5">更新履歴がありません</p>';
+    const msg = getMessage("noUpdateHistory") || "更新履歴がありません";
+    versionTab.innerHTML = `<p class="text-center text-muted mt-5">${escapeHtml(msg)}</p>`;
     return;
   }
 
@@ -57,7 +62,7 @@ function createVersionListHTML(items: VersionItem[]): string {
 
   return `
     <ul class="list-group list-group-flush">
-      <h5 class="pt-3 ps-2 mb-2">更新履歴</h5>
+      <h5 class="pt-3 ps-2 mb-2">${escapeHtml(getMessage("updateHistory") || "更新履歴")}</h5>
       ${entries}
     </ul>
   `;
@@ -76,7 +81,9 @@ function formatReleaseDate(dateValue?: string): string {
 }
 
 function createBadgeHTML(isFirst: boolean): string {
-  return isFirst ? '<span class="badge bg-primary">最新</span>' : "";
+  return isFirst
+    ? `<span class="badge bg-primary">${escapeHtml(getMessage("latest") || "最新")}</span>`
+    : "";
 }
 
 function applyMarkdownClassMap(html: string): string {

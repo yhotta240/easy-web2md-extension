@@ -1,4 +1,5 @@
-import privacyPolicyDoc from "../../../docs/policies/privacy-policy.md";
+import privatePolicyDocEn from "../../../docs/policies/privacy-policy.en.md";
+import privatePolicyDocJa from "../../../docs/policies/privacy-policy.md";
 import { openLinkNewTab } from "../../utils/dom";
 import { escapeHtml } from "../../utils/html";
 import { getMessage } from "../../utils/i18n";
@@ -99,6 +100,8 @@ export function setupInfoTab(
     openLinkNewTab(githubLink);
   }
 
+  const isJapanese = navigator.language.startsWith("ja");
+  const privacyPolicyDoc = isJapanese ? privatePolicyDocJa : privatePolicyDocEn;
   const privacyPolicyContent = document.getElementById("privacy-policy-content");
   if (privacyPolicyContent) {
     renderPrivacyPolicy(privacyPolicyContent, privacyPolicyDoc.content);

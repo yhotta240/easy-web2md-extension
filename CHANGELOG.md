@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2026-05-30
 
-#### Added
+### Added
 
 - 英語ローカリゼーションを追加
 - プレビュー表示のファイル名を動的に更新
 
-#### Changed
+### Changed
 
 - UIの改善とスタイル調整
 - タブのタイトルをファイル名に使用するように変更

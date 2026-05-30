@@ -4,6 +4,13 @@ declare module "*CHANGELOG.md" {
   export default changelog;
 }
 
+// Match files like CHANGELOG.en.md as well
+declare module "*CHANGELOG.en.md" {
+  import type { VersionItem } from "../popup/types";
+  const changelog: VersionItem[];
+  export default changelog;
+}
+
 declare module "*.md" {
   import type { DocItem } from "../popup/types";
   const doc: DocItem;
