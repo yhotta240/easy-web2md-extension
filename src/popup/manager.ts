@@ -45,9 +45,9 @@ export class PopupManager {
       "filename-checkbox",
     ) as HTMLInputElement | null;
 
-    this.setupUI();
     this.initialize();
     this.addEventListeners();
+    this.setupUI();
     this.setupDownloadTab();
   }
 
@@ -146,12 +146,20 @@ export class PopupManager {
       }
     });
 
+    this.fileNameInput?.addEventListener("input", (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      this.settings.fileName = target.value;
+      const previewFilename = document.getElementById("preview-filename");
+      if (previewFilename) {
+        previewFilename.title = `${target.value}.md`;
+        previewFilename.textContent = `${target.value}.md`;
+      }
+      setSettings(this.settings);
+    });
+
     this.saveFilenameCheckbox?.addEventListener("change", (e: Event) => {
       const target = e.target as HTMLInputElement;
       this.settings.fileName = target.checked ? (this.fileNameInput as HTMLInputElement).value : "";
-      this.showLog(
-        `${getMessage("filenameChanged")}${this.settings.fileName}${getMessage("rememberSuffix")}${getMessage("changed")}`,
-      );
       setSettings(this.settings);
     });
   }
@@ -243,13 +251,13 @@ export class PopupManager {
 
   // 解析結果を表示
   private setupPreview(result: string): void {
-    const fileName = this.fileNameInput?.value || "download";
-
+    const fileName = this.fileNameInput?.value || "webpage";
     // プレビューUIを描画
     renderPreviewResult(result, fileName);
 
     // ダウンロードボタンのイベントリスナー
     document.getElementById("download-md-button")?.addEventListener("click", () => {
+      const fileName = this.fileNameInput?.value || "webpage";
       if (downloadFile(result, fileName)) {
         this.showLog(getMessage("downloadComplete"));
       } else {

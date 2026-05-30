@@ -17,7 +17,7 @@ export function renderPreviewResult(result: string, fileName: string): void {
         </div>
 
         <div class="flex-grow-1 text-truncate">
-          <div class="fw-bold text-truncate" title="${fileName}.md">${fileName}.md</div>
+          <div id="preview-filename" class="fw-bold text-truncate" title="${fileName}.md">${fileName}.md</div>
           <div class="text-muted small">${fileSizeKB} KB / ${charCount} ${getMessage("characters")}</div>
         </div>
 
