@@ -47,29 +47,29 @@
             <div class="d-flex flex-column gap-1">
               <!-- 新しいタブで開く -->
               <button type="button" class="btn btn-sm more-option d-flex align-items-center gap-2 text-start"
-                id="new-tab-button" title="新しいタブで開く">
+                id="new-tab-button" data-i18n-attr="title" data-i18n="openInNewTab">
                 <i class="bi bi-box-arrow-up-right" style="font-size: 16px;"></i>
-                <span class="small">新しいタブで開く</span>
+                <span class="small" data-i18n="openInNewTab">新しいタブで開く</span>
               </button>
               <hr class="my-1">
               <!-- シェア -->
               <div class="px-2 py-1">
-                <span class="small text-muted">シェア</span>
+                <span class="small text-muted" data-i18n="shareLabel">シェア</span>
               </div>
               <button type="button" class="btn btn-sm share-option d-flex align-items-center gap-2 text-start"
-                data-share="twitter" title="X (Twitter)でシェア">
+                data-share="twitter" data-i18n-attr="title" data-i18n="platformTwitter">
                 <i class="bi bi-twitter-x" style="font-size: 16px;"></i>
-                <span class="small">X (Twitter)</span>
+                <span class="small" data-i18n="platformTwitter">X (Twitter)</span>
               </button>
               <button type="button" class="btn btn-sm share-option d-flex align-items-center gap-2 text-start"
-                data-share="facebook" title="Facebookでシェア">
+                data-share="facebook" data-i18n-attr="title" data-i18n="platformFacebook">
                 <i class="bi bi-facebook" style="font-size: 16px; color: #1877f2;"></i>
-                <span class="small">Facebook</span>
+                <span class="small" data-i18n="platformFacebook">Facebook</span>
               </button>
               <button type="button" class="btn btn-sm share-option d-flex align-items-center gap-2 text-start"
-                data-share="copy" title="URLをコピー">
+                data-share="copy" data-i18n-attr="title" data-i18n="titleCopyUrl">
                 <i class="bi bi-clipboard" style="font-size: 16px;"></i>
-                <span class="small">URLをコピー</span>
+                <span class="small" data-i18n="titleCopyUrl">URLをコピー</span>
               </button>
             </div>
           </div>
@@ -241,12 +241,12 @@
         <ul class="nav nav-underline px-2" id="panelTab" role="tablist">
           <li class="nav-item " role="presentation">
             <a class="nav-link active p-0" id="log-tab" data-bs-toggle="tab" href="#messagePanel" role="tab"
-              aria-controls="messagePanel" aria-selected="true">ログ</a>
+              aria-controls="messagePanel" aria-selected="true" data-i18n="outputTab">ログ</a>
           </li>
         </ul>
         <div class="d-flex justify-content-center align-items-center gap-1 gap-md-2 me-1 me-md-2">
           <!-- クリアボタン -->
-          <button type="button" class="btn btn-sm p-0 panel-btn" id="clear-button" title="メッセージクリア">
+          <button type="button" class="btn btn-sm p-0 panel-btn" id="clear-button" data-i18n-attr="title" data-i18n="clearMessage">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" alt="メッセージクリア" role="img"
               aria-label="メッセージクリア" fill="currentColor" width="16" height="16">
               <path
@@ -255,15 +255,15 @@
             </svg>
           </button>
           <!-- 最大化ボタン -->
-          <button type="button" class="btn btn-sm p-0 panel-btn" id="maximize-button" title="最大化">
+          <button type="button" class="btn btn-sm p-0 panel-btn" id="maximize-button" data-i18n-attr="title" data-i18n="maximize">
             <i class="bi bi-arrow-bar-up" style="font-size: 16px; line-height: 1;"></i>
           </button>
           <!-- 最小化ボタン -->
-          <button type="button" class="btn btn-sm p-0 panel-btn" id="minimize-button" title="最小化">
+          <button type="button" class="btn btn-sm p-0 panel-btn" id="minimize-button" data-i18n-attr="title" data-i18n="minimize">
             <i class="bi bi-arrow-bar-down" style="font-size: 16px; line-height: 1;"></i>
           </button>
           <!-- パネルの表示ボタン -->
-          <button type="button" class="btn btn-sm p-0 panel-btn" id="panel-button" title="パネルの表示">
+          <button type="button" class="btn btn-sm p-0 panel-btn" id="panel-button" data-i18n-attr="title" data-i18n="showPanel">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 -0.5 16 16" fill="none" stroke="currentColor"
               stroke-linecap="round" stroke-linejoin="round" id="Panel-Bottom-Open--Streamline-Lucide" height="16"
               width="16" aria-label="パネルの表示" role="img">
@@ -276,7 +276,7 @@
             </svg>
           </button>
           <!-- 閉じる -->
-          <button type="button" class="btn btn-sm p-0 panel-btn" id="close-button" title="閉じる">
+          <button type="button" class="btn btn-sm p-0 panel-btn" id="close-button" data-i18n-attr="title" data-i18n="close">
             <i class="bi bi-x" style="font-size: 18px; line-height: 1;"></i>
           </button>
         </div>
@@ -294,7 +294,7 @@
         </div>
         <div id="infoPanel" class="bg-body border p-1 overflow-auto tab-pane fade h-100" role="tabpanel"
           aria-labelledby="info-tab">
-          <p>情報</p>
+          <p data-i18n="infoDetails">情報</p>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { getMessage } from "../../utils/i18n";
 import type { LogEntry, LogLevel } from "../../utils/logger";
 
 const LEVEL_CLASS: Record<LogLevel, string> = {
@@ -249,7 +250,7 @@ export class PopupPanel {
         link.href = issuesUrl;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        link.textContent = "問題を報告する";
+        link.textContent = getMessage("linkReportIssue");
         link.className = "text-danger";
         body.appendChild(sep);
         body.appendChild(link);

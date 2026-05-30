@@ -195,7 +195,7 @@
     "message": "Not used or transferred to determine creditworthiness or for lending purposes"
   },
   "outputTab": {
-    "message": "Output"
+    "message": "Logs"
   },
   "clearMessage": {
     "message": "Clear Messages"
@@ -274,5 +274,63 @@
   },
   "disabled": {
     "message": "Disabled"
+  },
+  "errorLoadLogs": {
+    "message": "Failed to load logs"
+  },
+  "errorLoadSettings": {
+    "message": "Failed to load settings"
+  },
+  "errorSaveEnabled": {
+    "message": "Failed to save enabled state"
+  },
+  "errorSaveTheme": {
+    "message": "Failed to save theme setting"
+  },
+  "themeChanged": {
+    "message": "Changed theme to $1"
+  },
+  "platformTwitter": {
+    "message": "X (Twitter)"
+  },
+  "platformFacebook": {
+    "message": "Facebook"
+  },
+  "platformClipboard": {
+    "message": "Clipboard"
+  },
+  "shareCopied": {
+    "message": "URL copied"
+  },
+  "shareCompleted": {
+    "message": "Shared on $1"
+  },
+  "shareFailed": {
+    "message": "Sharing failed"
+  },
+  "shareLabel": {
+    "message": "Share"
+  },
+  "titleCopyUrl": {
+    "message": "Copy URL"
+  },
+  "errorGetActiveTabUrl": {
+    "message": "Failed to get active tab URL"
+  },
+  "urlChanged": {
+    "message": "URL changed: $1, hostname: $2"
+  },
+  "languageEnglish": {
+    "message": "English"
+  },
+  "unknown": {
+    "message": "Unknown"
+  }
+  ,
+  "extensionInstalled": {
+    "message": "Extension installed"
+  },
+  "extensionUpdated": {
+    "message": "Extension updated (v$1 → v$2)"
   }
 }

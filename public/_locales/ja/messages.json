@@ -195,7 +195,7 @@
     "message": "信用力を判断する目的または融資目的で使用または転送しないこと"
   },
   "outputTab": {
-    "message": "出力"
+    "message": "ログ"
   },
   "clearMessage": {
     "message": "メッセージクリア"
@@ -274,5 +274,63 @@
   },
   "disabled": {
     "message": "無効"
+  },
+  "errorLoadLogs": {
+    "message": "ログの読み込みに失敗しました"
+  },
+  "errorLoadSettings": {
+    "message": "設定の読み込みに失敗しました"
+  },
+  "errorSaveEnabled": {
+    "message": "有効状態の保存に失敗しました"
+  },
+  "errorSaveTheme": {
+    "message": "テーマ設定の保存に失敗しました"
+  },
+  "themeChanged": {
+    "message": "テーマを $1 に変更しました"
+  },
+  "platformTwitter": {
+    "message": "X (Twitter)"
+  },
+  "platformFacebook": {
+    "message": "Facebook"
+  },
+  "platformClipboard": {
+    "message": "クリップボード"
+  },
+  "shareCopied": {
+    "message": "URLをコピーしました"
+  },
+  "titleCopyUrl": {
+    "message": "URLをコピー"
+  },
+  "shareLabel": {
+    "message": "シェア"
+  },
+  "shareCompleted": {
+    "message": "$1でシェアしました"
+  },
+  "shareFailed": {
+    "message": "シェアに失敗しました"
+  },
+  "errorGetActiveTabUrl": {
+    "message": "アクティブなタブのURL取得に失敗しました"
+  },
+  "urlChanged": {
+    "message": "URLが変更されました: $1, ホスト名: $2"
+  },
+  "languageEnglish": {
+    "message": "英語"
+  },
+  "unknown": {
+    "message": "不明"
+  }
+  ,
+  "extensionInstalled": {
+    "message": "拡張機能がインストールされました"
+  },
+  "extensionUpdated": {
+    "message": "拡張機能がアップデートされました (v$1 → v$2)"
   }
 }

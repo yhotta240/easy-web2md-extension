@@ -3,7 +3,7 @@ import { renderPreviewResult } from "../components/preview-result";
 import { DEFAULT_SETTINGS, type Settings } from "../settings";
 import { downloadFile } from "../utils/file-downloader";
 import { parseHtmlContent } from "../utils/html-parser";
-import { getMessage } from "../utils/i18n";
+import { getMessage, initializeI18n } from "../utils/i18n";
 import {
   addLog,
   clearLogs,
@@ -46,9 +46,6 @@ export class PopupManager {
     ) as HTMLInputElement | null;
 
     this.initialize();
-    this.addEventListeners();
-    this.setupUI();
-    this.setupDownloadTab();
   }
 
   private async initialize(): Promise<void> {
@@ -64,7 +61,7 @@ export class PopupManager {
       }
       this.watchStorageLogs(visibleCount);
     } catch (err) {
-      console.error("ログ読み込みエラー", err);
+      console.error(getMessage("errorLoadLogs"), err);
       this.watchStorageLogs(0);
     }
 
@@ -77,8 +74,13 @@ export class PopupManager {
       }
       if (this.saveFilenameCheckbox) this.saveFilenameCheckbox.checked = !!this.settings.fileName;
     } catch {
-      await this.showLog("設定の読み込みに失敗しました", "error");
+      await this.showLog(getMessage("errorLoadSettings"), "error");
     }
+
+    initializeI18n();
+    this.addEventListeners();
+    this.setupUI();
+    this.setupDownloadTab();
   }
 
   private watchStorageLogs(knownLength: number): void {
@@ -110,11 +112,11 @@ export class PopupManager {
         await setEnabled(this.enabled);
         await this.showLog(
           this.enabled
-            ? `${this.manifestData.short_name} は有効になりました`
-            : `${this.manifestData.short_name} は無効になりました`,
+            ? `${this.manifestData.short_name}${getMessage("enabledMessage")}`
+            : `${this.manifestData.short_name}${getMessage("disabledMessage")}`,
         );
       } catch {
-        await this.showLog("有効状態の保存に失敗しました", "error");
+        await this.showLog(getMessage("errorSaveEnabled"), "error");
       }
     });
 
@@ -122,27 +124,27 @@ export class PopupManager {
     setupThemeMenu(async (value: Theme) => {
       try {
         applyTheme(value);
-        await this.showLog(`テーマを ${value} に変更しました`);
+        await this.showLog(getMessage("themeChanged", value));
       } catch {
-        await this.showLog("テーマ設定の保存に失敗しました", "error");
+        await this.showLog(getMessage("errorSaveTheme"), "error");
       }
     });
 
     // シェアメニューの初期化
     initShareMenu(async (platform: SharePlatform, success: boolean) => {
       const platformNames: Record<SharePlatform, string> = {
-        twitter: "X (Twitter)",
-        facebook: "Facebook",
-        copy: "クリップボード",
+        twitter: getMessage("platformTwitter"),
+        facebook: getMessage("platformFacebook"),
+        copy: getMessage("platformClipboard"),
       };
       if (success) {
         if (platform === "copy") {
-          await this.showLog("URLをコピーしました");
+          await this.showLog(getMessage("shareCopied"));
         } else {
-          await this.showLog(`${platformNames[platform]}でシェアしました`);
+          await this.showLog(getMessage("shareCompleted", platformNames[platform]));
         }
       } else {
-        await this.showLog("シェアに失敗しました", "error");
+        await this.showLog(getMessage("shareFailed"), "error");
       }
     });
 
@@ -185,7 +187,7 @@ export class PopupManager {
 
         await this.handleConversion();
       } catch {
-        this.showLog("アクティブなタブのURL取得に失敗しました", "error");
+        this.showLog(getMessage("errorGetActiveTabUrl"), "error");
       }
     };
 
@@ -204,7 +206,7 @@ export class PopupManager {
       const url = new URL(value);
       if (!url?.hostname) return;
       const hostname = url.hostname;
-      this.showLog(`URLが変更されました: ${value}, ホスト名: ${hostname}`);
+      this.showLog(getMessage("urlChanged", [value, hostname]));
       if (this.fileNameInput) {
         this.fileNameInput.value = hostname.replace(/\./g, "_");
       }
@@ -293,7 +295,7 @@ export class PopupManager {
     }
     const enabledLabel = document.getElementById("enabled-label");
     if (enabledLabel) {
-      enabledLabel.textContent = `${short_name} を有効にする`;
+      enabledLabel.textContent = `${short_name} ${getMessage("enabled")}`;
     }
 
     setupMoreMenu();

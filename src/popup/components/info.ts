@@ -1,6 +1,7 @@
 import privacyPolicyDoc from "../../../docs/policies/privacy-policy.md";
 import { openLinkNewTab } from "../../utils/dom";
 import { escapeHtml } from "../../utils/html";
+import { getMessage } from "../../utils/i18n";
 import type { ManifestMetadata } from "../types";
 
 const PRIVACY_CLASS_MAP: Record<string, string> = {
@@ -67,21 +68,27 @@ export function setupInfoTab(
 
   chrome.extension.isAllowedIncognitoAccess((isAllowedAccess) => {
     const incognitoEnabled = document.getElementById("incognito-enabled");
-    if (incognitoEnabled) incognitoEnabled.textContent = isAllowedAccess ? "有効" : "無効";
+    if (incognitoEnabled)
+      incognitoEnabled.textContent = isAllowedAccess
+        ? getMessage("enabled")
+        : getMessage("disabled");
   });
 
-  const languageMap: { [key: string]: string } = { en: "英語", ja: "日本語" };
+  const languageMap: { [key: string]: string } = {
+    en: getMessage("languageEnglish"),
+    ja: getMessage("languageJapanese"),
+  };
   const language = document.getElementById("language") as HTMLElement | null;
   const languages = manifestMetadata.languages || [];
   if (language)
     language.textContent = languages.map((lang: string) => languageMap[lang]).join(", ");
 
   const publisherName = document.getElementById("publisher-name") as HTMLElement | null;
-  const publisher = manifestMetadata.publisher || "不明";
+  const publisher = manifestMetadata.publisher || getMessage("unknown");
   if (publisherName) publisherName.textContent = publisher;
 
   const developerName = document.getElementById("developer-name") as HTMLElement | null;
-  const developer = manifestMetadata.developer || "不明";
+  const developer = manifestMetadata.developer || getMessage("unknown");
   if (developerName) developerName.textContent = developer;
 
   const githubLink = document.getElementById("github-link") as HTMLAnchorElement;
@@ -117,11 +124,11 @@ function renderPrivacyPolicy(container: HTMLElement, html: string): void {
 export function getSiteAccessText(origins: string[] | undefined): string {
   if (origins && origins.length > 0) {
     if (origins.includes("<all_urls>")) {
-      return "すべてのサイト";
+      return getMessage("allSites");
     } else {
       return origins.map(escapeHtml).join("<br>");
     }
   } else {
-    return "クリックされた場合のみ";
+    return getMessage("onClickOnly");
   }
 }
