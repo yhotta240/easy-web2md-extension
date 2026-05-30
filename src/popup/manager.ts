@@ -171,16 +171,17 @@ export class PopupManager {
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
       try {
-        const { hostname, url } = await getActiveTabUrl();
+        const { url, tabTitle } = await getActiveTabUrl();
 
-        if (!url || !hostname || !this.fileNameInput) {
+        if (!url || !tabTitle || !this.fileNameInput) {
           return;
         }
+        console.log("アクティブなタブのURL:", url);
         this.url = url;
 
         siteUrlInput.value = url.href;
         // ファイル名を設定
-        this.fileNameInput.value = hostname.replace(/\./g, "_");
+        this.fileNameInput.value = tabTitle.replace(/\./g, "_");
 
         await this.handleConversion();
       } catch {

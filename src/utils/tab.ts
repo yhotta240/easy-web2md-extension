@@ -49,13 +49,12 @@ export async function reloadTargetTabs(targetUrls: string[]): Promise<void> {
 /**
  * アクティブなブラウザタブのURLを取得する
  */
-export async function getActiveTabUrl(): Promise<{ baseUrl: string; hostname: string; url: URL }> {
+export async function getActiveTabUrl(): Promise<{ url: URL; tabTitle: string }> {
   const queryOptions = { active: true, currentWindow: true };
   const tabs = await chrome.tabs.query(queryOptions);
   if (tabs.length === 0) throw new Error("アクティブなタブが見つかりません");
   if (!tabs[0].url) throw new Error("アクティブなタブのURLが取得できません");
   const url = new URL(tabs[0].url);
-  const baseUrl = url.origin;
-  const hostname = url.hostname;
-  return { baseUrl, hostname, url };
+  const tabTitle = tabs[0].title ? tabs[0].title.substring(0, 30) : "webpage";
+  return { url, tabTitle };
 }
