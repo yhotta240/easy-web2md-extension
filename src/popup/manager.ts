@@ -1,5 +1,4 @@
 import meta from "../../public/manifest.meta.json";
-import { renderPreviewResult } from "../components/preview-result";
 import { DEFAULT_SETTINGS, type Settings } from "../settings";
 import { downloadFile } from "../utils/file-downloader";
 import { parseHtmlContent } from "../utils/html-parser";
@@ -19,6 +18,7 @@ import { setupDocumentTab } from "./components/document";
 import { setupInfoTab } from "./components/info";
 import { setupMoreMenu } from "./components/menu";
 import { PopupPanel } from "./components/panel";
+import { renderPreviewResult } from "./components/preview";
 import { initShareMenu } from "./components/share";
 import { applyTheme, setupThemeMenu } from "./components/theme";
 import { setupVersionTab } from "./components/version";

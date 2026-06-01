@@ -1,4 +1,4 @@
-import { getMessage } from "../utils/i18n";
+import { getMessage } from "../../utils/i18n";
 
 export function renderPreviewResult(result: string, fileName: string): void {
   const markdownPreview = document.getElementById("markdown-preview");
