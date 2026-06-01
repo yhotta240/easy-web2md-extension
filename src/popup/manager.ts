@@ -13,7 +13,7 @@ import {
   type LogLevel,
 } from "../utils/logger";
 import { toMarkdown } from "../utils/markdown-converter";
-import { getSettings, isEnabled, setEnabled, setSettings } from "../utils/storage";
+import { getSettings, setSettings } from "../utils/storage";
 import { getActiveTabUrl } from "../utils/tab";
 import { setupDocumentTab } from "./components/document";
 import { setupInfoTab } from "./components/info";
@@ -26,11 +26,9 @@ import type { ManifestMetadata, SharePlatform, Theme } from "./types";
 
 export class PopupManager {
   private panel: PopupPanel;
-  private enabled: boolean = false;
   private settings: Settings = DEFAULT_SETTINGS;
   private manifestData: chrome.runtime.Manifest;
   private manifestMetadata: ManifestMetadata;
-  private enabledElement: HTMLInputElement | null;
   private fileNameInput: HTMLInputElement | null;
   private saveFilenameCheckbox: HTMLInputElement | null;
   private url: URL | null = null;
@@ -39,7 +37,6 @@ export class PopupManager {
     this.panel = new PopupPanel();
     this.manifestData = chrome.runtime.getManifest();
     this.manifestMetadata = meta || {};
-    this.enabledElement = document.getElementById("enabled") as HTMLInputElement | null;
     this.fileNameInput = document.getElementById("filename-input") as HTMLInputElement | null;
     this.saveFilenameCheckbox = document.getElementById(
       "filename-checkbox",
@@ -67,8 +64,6 @@ export class PopupManager {
 
     try {
       this.settings = await getSettings();
-      this.enabled = await isEnabled();
-      if (this.enabledElement) this.enabledElement.checked = this.enabled;
       if (this.fileNameInput && this.settings.fileName) {
         this.fileNameInput.value = this.settings.fileName;
       }
@@ -106,20 +101,6 @@ export class PopupManager {
   }
 
   private addEventListeners(): void {
-    this.enabledElement?.addEventListener("change", async (event) => {
-      this.enabled = (event.target as HTMLInputElement).checked;
-      try {
-        await setEnabled(this.enabled);
-        await this.showLog(
-          this.enabled
-            ? `${this.manifestData.short_name}${getMessage("enabledMessage")}`
-            : `${this.manifestData.short_name}${getMessage("disabledMessage")}`,
-        );
-      } catch {
-        await this.showLog(getMessage("errorSaveEnabled"), "error");
-      }
-    });
-
     // テーマ設定のイベントリスナー
     setupThemeMenu(async (value: Theme) => {
       try {
@@ -292,10 +273,6 @@ export class PopupManager {
     const titleHeader = document.getElementById("title-header");
     if (titleHeader) {
       titleHeader.textContent = short_name;
-    }
-    const enabledLabel = document.getElementById("enabled-label");
-    if (enabledLabel) {
-      enabledLabel.textContent = `${short_name} ${getMessage("enabled")}`;
     }
 
     setupMoreMenu();

@@ -5,17 +5,8 @@ export async function getSettings(): Promise<Settings> {
   return data.settings ?? DEFAULT_SETTINGS;
 }
 
-export async function isEnabled(): Promise<boolean> {
-  const data = await getStorage<{ enabled?: boolean }>("enabled");
-  return data.enabled === true;
-}
-
 export async function setSettings(settings: Settings): Promise<void> {
   await setStorage({ settings });
-}
-
-export async function setEnabled(enabled: boolean): Promise<void> {
-  await setStorage({ enabled });
 }
 
 export function getStorage<T extends Record<string, unknown>>(
