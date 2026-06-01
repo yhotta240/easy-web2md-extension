@@ -64,10 +64,12 @@ export class PopupManager {
 
     try {
       this.settings = await getSettings();
-      if (this.fileNameInput && this.settings.fileName) {
+      if (this.saveFilenameCheckbox) {
+        this.saveFilenameCheckbox.checked = !!this.settings.saveFilename;
+      }
+      if (this.settings.saveFilename && this.fileNameInput && this.settings.fileName) {
         this.fileNameInput.value = this.settings.fileName;
       }
-      if (this.saveFilenameCheckbox) this.saveFilenameCheckbox.checked = !!this.settings.fileName;
     } catch {
       await this.showLog(getMessage("errorLoadSettings"), "error");
     }
@@ -142,7 +144,13 @@ export class PopupManager {
 
     this.saveFilenameCheckbox?.addEventListener("change", (e: Event) => {
       const target = e.target as HTMLInputElement;
-      this.settings.fileName = target.checked ? (this.fileNameInput as HTMLInputElement).value : "";
+      this.settings.saveFilename = target.checked;
+      if (target.checked) {
+        // 現在のファイル名を保存する
+        this.settings.fileName = (this.fileNameInput as HTMLInputElement).value || "";
+      } else {
+        this.settings.fileName = "";
+      }
       setSettings(this.settings);
     });
   }
@@ -163,8 +171,10 @@ export class PopupManager {
         this.url = url;
 
         siteUrlInput.value = url.href;
-        // ファイル名を設定
-        this.fileNameInput.value = tabTitle.replace(/\./g, "_");
+        // ファイル名を設定（保存済みファイル名がある場合は上書きしない）
+        if (!this.settings.saveFilename || !this.settings.fileName) {
+          this.fileNameInput.value = tabTitle.replace(/\./g, "_");
+        }
 
         await this.handleConversion();
       } catch {
