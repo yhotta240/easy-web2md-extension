@@ -22,10 +22,8 @@ function sanitizeMarkdown(md: string): string {
   let s = md.replace(/\r\n/g, "\n");
 
   // 不要な要素を削除
-  s = s.replace(/\[\s*\]\(\s*\)/g, "");
-  s = s.replace(/<!--\s*\$\s*-->/g, "");
-  s = s.replace(/<!--\s*\/\$\s*-->/g, "");
-  s = s.replace(/<!---->/g, "");
+  s = s.replace(/\[\s*\]\([^)]*\)/g, ""); // 空のリンクを削除
+  s = s.replace(/<!--[\s\S]*?-->/g, ""); // HTMLコメントを削除
 
   // コードブロック外の1文字だけの行を削除
   const lines = s.split("\n");
