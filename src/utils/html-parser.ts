@@ -31,6 +31,17 @@ export function parseHtmlContent(html: string): string {
   doc.querySelectorAll(selectorsToRemove.join(",")).forEach((el) => {
     el.remove();
   });
+
+  doc.querySelectorAll("a").forEach((anchor) => {
+    if (!anchor.textContent?.trim()) return;
+
+    anchor.querySelectorAll("img").forEach((img) => {
+      if (!img.getAttribute("alt")?.trim()) {
+        img.remove();
+      }
+    });
+  });
+
   if (!doc.body) {
     return "";
   }
