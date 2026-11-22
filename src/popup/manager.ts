@@ -143,12 +143,13 @@ export class PopupManager {
   private async setupDownloadTab(): Promise<void> {
     const siteUrlInput = document.getElementById("site-url-input") as HTMLInputElement;
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
-    const minImageSizeInput = document.querySelector<HTMLInputElement>("#min-image-size");
-    const preferDisplayedSizeInput = document.querySelector<HTMLInputElement>(
-      "#prefer-displayed-image-size",
-    );
+    const minImageSizeInput = document.getElementById("min-image-size") as HTMLInputElement;
+    const preferDisplayedSizeInput = document.getElementById(
+      "prefer-displayed-image-size",
+    ) as HTMLInputElement;
 
-    const applyImageSettings = () => {
+    const applyImageSettings = (changes: Partial<Settings>) => {
+      this.settings = { ...this.settings, ...changes };
       void setSettings(this.settings).catch(() =>
         this.showLog(getMessage("errorSaveMinImageSize"), "error"),
       );
@@ -157,32 +158,22 @@ export class PopupManager {
         .forEach((button) => {
           button.disabled = true;
         });
-      void this.handleConversion();
+      void this.handleConversion().catch(() => this.showLog(getMessage("warningNoAccess"), "warn"));
     };
 
-    if (minImageSizeInput) {
-      minImageSizeInput.value = String(this.settings.minImageSize);
-      minImageSizeInput.addEventListener("change", () => {
-        if (!minImageSizeInput.reportValidity()) return;
-        const minImageSize =
-          minImageSizeInput.value === ""
-            ? DEFAULT_SETTINGS.minImageSize
-            : minImageSizeInput.valueAsNumber;
-        minImageSizeInput.value = String(minImageSize);
-        if (minImageSize === this.settings.minImageSize) return;
+    minImageSizeInput.value = String(this.settings.minImageSize);
+    minImageSizeInput.addEventListener("change", () => {
+      if (!minImageSizeInput.reportValidity()) return;
+      const value = minImageSizeInput.valueAsNumber;
+      const minImageSize = Number.isNaN(value) ? DEFAULT_SETTINGS.minImageSize : value;
+      minImageSizeInput.value = String(minImageSize);
+      if (minImageSize !== this.settings.minImageSize) applyImageSettings({ minImageSize });
+    });
 
-        this.settings.minImageSize = minImageSize;
-        applyImageSettings();
-      });
-    }
-
-    if (preferDisplayedSizeInput) {
-      preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
-      preferDisplayedSizeInput.addEventListener("change", () => {
-        this.settings.preferDisplayedImageSize = preferDisplayedSizeInput.checked;
-        applyImageSettings();
-      });
-    }
+    preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
+    preferDisplayedSizeInput.addEventListener("change", () => {
+      applyImageSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
+    });
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
       try {
@@ -246,13 +237,14 @@ export class PopupManager {
   // HTMLをMarkdownに変換
   private async handleConversion(): Promise<void> {
     const conversionId = ++this.conversionId;
-    try {
-      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!activeTab?.id || !activeTab.url?.startsWith("http")) {
-        this.showLog(getMessage("warningCannotGetHtml"), "warn");
-        return;
-      }
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const activeTab = tabs[0];
+    if (!activeTab?.id || !activeTab.url?.startsWith("http")) {
+      this.showLog(getMessage("warningCannotGetHtml"), "warn");
+      return;
+    }
 
+    try {
       // content script から HTML を取得
       const responseContent = await chrome.tabs.sendMessage(activeTab.id, {
         action: "get-page-content",
