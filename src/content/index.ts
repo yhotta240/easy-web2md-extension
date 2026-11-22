@@ -1,8 +1,13 @@
-function getDisplayedImageSize(img: HTMLImageElement): { width: number; height: number } {
+function getDisplayedImageSize(img: HTMLImageElement) {
   const style = getComputedStyle(img);
-  const width = style.width.endsWith("px") ? Number.parseFloat(style.width) : img.width;
-  const height = style.height.endsWith("px") ? Number.parseFloat(style.height) : img.height;
-  return { width: width || img.naturalWidth, height: height || img.naturalHeight };
+  return {
+    width: style.width.endsWith("px")
+      ? Number.parseFloat(style.width)
+      : img.width || img.naturalWidth || undefined,
+    height: style.height.endsWith("px")
+      ? Number.parseFloat(style.height)
+      : img.height || img.naturalHeight || undefined,
+  };
 }
 
 function getPageHtml(minImageSize: number, preferDisplayedImageSize: boolean): string {
@@ -14,8 +19,14 @@ function getPageHtml(minImageSize: number, preferDisplayedImageSize: boolean): s
   root.querySelectorAll("img").forEach((img, index) => {
     const { width, height } = preferDisplayedImageSize
       ? getDisplayedImageSize(img)
-      : { width: img.naturalWidth || img.width, height: img.naturalHeight || img.height };
-    if ((width > 0 && width < minImageSize) || (height > 0 && height < minImageSize)) {
+      : {
+          width: img.naturalWidth || img.width || undefined,
+          height: img.naturalHeight || img.height || undefined,
+        };
+    if (
+      (width !== undefined && width < minImageSize) ||
+      (height !== undefined && height < minImageSize)
+    ) {
       copiedImages[index].remove();
     }
   });
