@@ -1,5 +1,5 @@
 import meta from "../../public/manifest.meta.json";
-import { DEFAULT_SETTINGS, type Settings } from "../settings";
+import { DEFAULT_SETTINGS, type ElementExclusions, type Settings } from "../settings";
 import { downloadFile } from "../utils/file-downloader";
 import { parseHtmlContent } from "../utils/html-parser";
 import { getMessage, initializeI18n } from "../utils/i18n";
@@ -148,10 +148,10 @@ export class PopupManager {
       "prefer-displayed-image-size",
     ) as HTMLInputElement;
 
-    const applyImageSettings = (changes: Partial<Settings>) => {
+    const applyConversionSettings = (changes: Partial<Settings>) => {
       this.settings = { ...this.settings, ...changes };
       void setSettings(this.settings).catch(() =>
-        this.showLog(getMessage("errorSaveMinImageSize"), "error"),
+        this.showLog(getMessage("errorSaveConversionSettings"), "error"),
       );
       document
         .querySelectorAll<HTMLButtonElement>("#copy-md-button, #download-md-button")
@@ -167,12 +167,18 @@ export class PopupManager {
       const value = minImageSizeInput.valueAsNumber;
       const minImageSize = Number.isNaN(value) ? DEFAULT_SETTINGS.minImageSize : value;
       minImageSizeInput.value = String(minImageSize);
-      if (minImageSize !== this.settings.minImageSize) applyImageSettings({ minImageSize });
+      if (minImageSize !== this.settings.minImageSize) applyConversionSettings({ minImageSize });
     });
 
     preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
     preferDisplayedSizeInput.addEventListener("change", () => {
-      applyImageSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
+      applyConversionSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
+    });
+
+    document.querySelectorAll<HTMLInputElement>("#element-exclusions input").forEach((input) => {
+      const setting = input.name as keyof ElementExclusions;
+      input.checked = this.settings[setting];
+      input.addEventListener("change", () => applyConversionSettings({ [setting]: input.checked }));
     });
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
@@ -283,7 +289,7 @@ export class PopupManager {
   // HTML を Markdown に変換してプレビューを表示
   private async handleHtml(html: string, conversionId: number): Promise<void> {
     await this.showLog(getMessage("parsingHtml"));
-    const cleanedHtml = parseHtmlContent(html);
+    const cleanedHtml = parseHtmlContent(html, this.settings);
 
     await this.showLog(getMessage("convertingToMarkdown"));
     const markdown = await toMarkdown(cleanedHtml);

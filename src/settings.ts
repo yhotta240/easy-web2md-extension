@@ -1,4 +1,11 @@
-export type Settings = {
+export type ElementExclusions = {
+  excludeSiteHeader: boolean;
+  excludeNavigation: boolean;
+  excludeSidebar: boolean;
+  excludeFooter: boolean;
+};
+
+export type Settings = ElementExclusions & {
   fileName: string;
   saveFilename: boolean;
   minImageSize: number;
@@ -10,4 +17,8 @@ export const DEFAULT_SETTINGS: Settings = {
   saveFilename: false,
   minImageSize: 200,
   preferDisplayedImageSize: false,
+  excludeSiteHeader: true,
+  excludeNavigation: true,
+  excludeSidebar: true,
+  excludeFooter: true,
 };

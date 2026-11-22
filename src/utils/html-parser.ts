@@ -1,4 +1,9 @@
-export function parseHtmlContent(html: string): string {
+import { DEFAULT_SETTINGS, type ElementExclusions } from "../settings";
+
+export function parseHtmlContent(
+  html: string,
+  exclusions: ElementExclusions = DEFAULT_SETTINGS,
+): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
 
@@ -13,15 +18,18 @@ export function parseHtmlContent(html: string): string {
     "link",
     "iframe", // 埋め込みコンテンツ
     "svg", // アイコンなど
-    "nav", // ナビゲーションメニュー
-    "aside", // サイドバー
-    "footer", // フッター
-    '[role="banner"]',
-    '[role="navigation"]',
     '[role="search"]',
-    '[role="complementary"]',
     '[aria-hidden="true"]', // スクリーンリーダーから隠されている要素
   ];
+  if (exclusions.excludeSiteHeader) {
+    selectorsToRemove.push(
+      "body header:not(:is(main, article, section, nav, aside, footer) header)",
+      '[role="banner"]',
+    );
+  }
+  if (exclusions.excludeNavigation) selectorsToRemove.push("nav", '[role="navigation"]');
+  if (exclusions.excludeSidebar) selectorsToRemove.push("aside", '[role="complementary"]');
+  if (exclusions.excludeFooter) selectorsToRemove.push("footer");
 
   // .svg 画像を削除
   doc.querySelectorAll('img[src$=".svg"]').forEach((el) => {
