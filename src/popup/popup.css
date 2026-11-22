@@ -67,6 +67,38 @@ html {
   white-space: pre;
 }
 
+.markdown-preview-summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.markdown-preview-summary:hover {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.markdown-preview-summary::before {
+  content: "";
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+details[open] > .markdown-preview-summary::before {
+  transform: rotate(45deg);
+}
+
+#popup-body .markdown-preview-code {
+  max-height: 300px;
+  margin: 0;
+  overflow: auto;
+  border: 0;
+  border-top: 1px solid var(--bs-border-color);
+  border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+}
+
 .panel-btn {
   width: 20px;
   height: 20px;
