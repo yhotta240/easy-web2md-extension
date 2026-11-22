@@ -44,6 +44,15 @@
   "rememberFilename": {
     "message": "ファイル名を記憶する"
   },
+  "minImageSizeLabel": {
+    "message": "最小画像サイズ："
+  },
+  "preferDisplayedImageSize": {
+    "message": "表示サイズを優先"
+  },
+  "errorSaveMinImageSize": {
+    "message": "最小画像サイズを保存できませんでした"
+  },
   "markdownPreview": {
     "message": "マークダウン表示"
   },
