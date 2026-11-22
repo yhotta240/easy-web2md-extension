@@ -224,6 +224,15 @@
   "downloadButton": {
     "message": "ダウンロード"
   },
+  "copyMarkdownButton": {
+    "message": "マークダウンをコピー"
+  },
+  "copyMarkdownSuccess": {
+    "message": "コピーしました"
+  },
+  "copyMarkdownFailed": {
+    "message": "コピーできませんでした"
+  },
   "enabledMessage": {
     "message": " は有効になっています"
   },

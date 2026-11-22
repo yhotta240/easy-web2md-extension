@@ -224,6 +224,15 @@
   "downloadButton": {
     "message": "Download"
   },
+  "copyMarkdownButton": {
+    "message": "Copy Markdown"
+  },
+  "copyMarkdownSuccess": {
+    "message": "Copied"
+  },
+  "copyMarkdownFailed": {
+    "message": "Could not copy"
+  },
   "enabledMessage": {
     "message": " is enabled"
   },
