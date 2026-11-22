@@ -32,6 +32,7 @@ export class PopupManager {
   private fileNameInput: HTMLInputElement | null;
   private saveFilenameCheckbox: HTMLInputElement | null;
   private url: URL | null = null;
+  private conversionId = 0;
 
   constructor() {
     this.panel = new PopupPanel();
@@ -142,6 +143,31 @@ export class PopupManager {
   private async setupDownloadTab(): Promise<void> {
     const siteUrlInput = document.getElementById("site-url-input") as HTMLInputElement;
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
+    const minImageSizeInput = document.querySelector<HTMLInputElement>("#min-image-size");
+
+    if (minImageSizeInput) {
+      minImageSizeInput.value = String(this.settings.minImageSize);
+      minImageSizeInput.addEventListener("change", () => {
+        if (!minImageSizeInput.reportValidity()) return;
+        const minImageSize =
+          minImageSizeInput.value === ""
+            ? DEFAULT_SETTINGS.minImageSize
+            : minImageSizeInput.valueAsNumber;
+        minImageSizeInput.value = String(minImageSize);
+        if (minImageSize === this.settings.minImageSize) return;
+
+        this.settings.minImageSize = minImageSize;
+        void setSettings(this.settings).catch(() =>
+          this.showLog(getMessage("errorSaveMinImageSize"), "error"),
+        );
+        document
+          .querySelectorAll<HTMLButtonElement>("#copy-md-button, #download-md-button")
+          .forEach((button) => {
+            button.disabled = true;
+          });
+        void this.handleConversion();
+      });
+    }
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
       try {
@@ -204,24 +230,26 @@ export class PopupManager {
 
   // HTMLをMarkdownに変換
   private async handleConversion(): Promise<void> {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    const activeTab = tabs[0];
-    if (!activeTab?.id || !activeTab.url?.startsWith("http")) {
-      this.showLog(getMessage("warningCannotGetHtml"), "warn");
-      return;
-    }
-
+    const conversionId = ++this.conversionId;
     try {
+      const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (!activeTab?.id || !activeTab.url?.startsWith("http")) {
+        this.showLog(getMessage("warningCannotGetHtml"), "warn");
+        return;
+      }
+
       // content script から HTML を取得
       const responseContent = await chrome.tabs.sendMessage(activeTab.id, {
         action: "get-page-content",
+        minImageSize: this.settings.minImageSize,
       });
       if (!responseContent?.html) {
         this.showLog(getMessage("errorNoHtml"), "error");
         return;
       }
 
-      this.handleHtml(responseContent.html);
+      if (conversionId !== this.conversionId) return;
+      await this.handleHtml(responseContent.html, conversionId);
     } catch {
       this.showLog(getMessage("warningNoAccess"), "warn");
     }
@@ -245,12 +273,13 @@ export class PopupManager {
   }
 
   // HTML を Markdown に変換してプレビューを表示
-  private async handleHtml(html: string): Promise<void> {
+  private async handleHtml(html: string, conversionId: number): Promise<void> {
     await this.showLog(getMessage("parsingHtml"));
     const cleanedHtml = parseHtmlContent(html);
 
     await this.showLog(getMessage("convertingToMarkdown"));
     const markdown = await toMarkdown(cleanedHtml);
+    if (conversionId !== this.conversionId) return;
 
     this.setupPreview(markdown);
     await this.showLog(

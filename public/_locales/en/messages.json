@@ -44,6 +44,12 @@
   "rememberFilename": {
     "message": "Remember filename"
   },
+  "minImageSizeLabel": {
+    "message": "Minimum image size"
+  },
+  "errorSaveMinImageSize": {
+    "message": "Could not save the minimum image size"
+  },
   "markdownPreview": {
     "message": "Markdown Preview"
   },

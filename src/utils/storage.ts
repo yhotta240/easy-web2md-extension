@@ -1,8 +1,8 @@
 import { DEFAULT_SETTINGS, type Settings } from "../settings";
 
 export async function getSettings(): Promise<Settings> {
-  const data = await getStorage<{ settings?: Settings }>("settings");
-  return data.settings ?? DEFAULT_SETTINGS;
+  const data = await getStorage<{ settings?: Partial<Settings> }>("settings");
+  return { ...DEFAULT_SETTINGS, ...data.settings };
 }
 
 export async function setSettings(settings: Settings): Promise<void> {
