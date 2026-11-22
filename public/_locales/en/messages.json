@@ -71,6 +71,9 @@
   "minLinkCount": {
     "message": "Minimum link count"
   },
+  "outputSettings": {
+    "message": "Output settings"
+  },
   "useFullUrls": {
     "message": "Use full URLs for links and images"
   },
