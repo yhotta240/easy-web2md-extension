@@ -106,37 +106,35 @@
     <div class="tab-pane fade mt-2 mx-2 show active" id="download" role="tabpanel" style="margin-bottom: 180px;"
       aria-labelledby="download-tab">
       <ul class="list-group list-group-flush">
+        <li id="markdown-preview" class="list-group-item">
+          <h2 class="h6 mb-2" data-i18n="markdownPreview">マークダウン表示</h2>
+          <div class="text-body-secondary small" data-i18n="webPageNotFound">WEBページが見つかりません</div>
+        </li>
         <li class="list-group-item">
-          <p class="m-0 fw-bold" data-i18n="urlLabel">URL</p>
+          <label class="form-label fw-semibold mb-1" for="site-url-input" data-i18n="urlLabel">URL</label>
           <div class="input-group-sm input-group relative">
             <span id="url-clear-button">
               <i class="bi bi-x" style="font-size: 16px; line-height: 1;"></i>
             </span>
             <input class="form-control form-control-sm pe-4" type="text" data-i18n-attr="placeholder"
-              data-i18n="urlPlaceholder" aria-label=".form-control-sm example" id="site-url-input" disabled>
-            <button type="button" id="site-url-button" class="btn btn-outline-secondary btn-sm "
+              data-i18n="urlPlaceholder" id="site-url-input" disabled>
+            <button type="button" id="site-url-button" class="btn btn-outline-secondary btn-sm"
               data-i18n="currentUrlButton">現在のURL</button>
           </div>
-
-          <p class="m-0 fw-bold mt-2" data-i18n="filenameLabel">ファイル名:</p>
+          <label class="form-label fw-semibold mt-2 mb-1" for="filename-input" data-i18n="filenameLabel">ファイル名</label>
           <div class="relative">
             <span id="filename-clear-button">
               <i class="bi bi-x" style="font-size: 16px; line-height: 1;"></i>
             </span>
             <input class="form-control form-control-sm pe-4" type="text" data-i18n-attr="placeholder"
-              data-i18n="filenamePlaceholder" aria-label=".form-control-sm example" id="filename-input">
+              data-i18n="filenamePlaceholder" id="filename-input">
           </div>
-          <div class="form-check">
+          <div class="form-check mt-1">
             <input class="form-check-input" type="checkbox" id="filename-checkbox">
             <label class="form-check-label" for="filename-checkbox" data-i18n="rememberFilename">
               ファイル名を記憶する
             </label>
           </div>
-
-        </li>
-        <li id="markdown-preview" class="list-group-item ">
-          <p class="m-0 fw-bold my-2" data-i18n="markdownPreview">マークダウン表示</p>
-          <div data-i18n="webPageNotFound">WEBページが見つかりません</div>
         </li>
       </ul>
     </div>
