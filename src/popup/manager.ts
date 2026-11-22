@@ -18,7 +18,7 @@ import { setupDocumentTab } from "./components/document";
 import { setupInfoTab } from "./components/info";
 import { setupMoreMenu } from "./components/menu";
 import { PopupPanel } from "./components/panel";
-import { renderPreviewResult } from "./components/preview";
+import { renderPreviewResult, updatePreviewFilename } from "./components/preview";
 import { initShareMenu } from "./components/share";
 import { applyTheme, setupThemeMenu } from "./components/theme";
 import { setupVersionTab } from "./components/version";
@@ -121,11 +121,7 @@ export class PopupManager {
     this.fileNameInput?.addEventListener("input", (e: Event) => {
       const target = e.target as HTMLInputElement;
       this.settings.fileName = target.value;
-      const previewFilename = document.getElementById("preview-filename");
-      if (previewFilename) {
-        previewFilename.title = `${target.value}.md`;
-        previewFilename.textContent = `${target.value}.md`;
-      }
+      updatePreviewFilename(target.value);
       setSettings(this.settings);
     });
 
@@ -200,6 +196,7 @@ export class PopupManager {
     filenameClearButton?.addEventListener("click", () => {
       if (this.fileNameInput) {
         this.fileNameInput.value = "";
+        this.fileNameInput.dispatchEvent(new Event("input"));
         this.fileNameInput.focus();
       }
     });
