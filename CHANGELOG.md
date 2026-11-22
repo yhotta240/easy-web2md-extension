@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-23
+
+### Added
+
+- プレビューに Markdown のコピー機能を追加
+- 小さい画像やヘッダー・ナビゲーション・リンク集などの除外設定を追加
+- リンクと画像の相対 URL を補完する設定を追加
+
+### Changed
+
+- ポップアップのレイアウトと操作ボタンの配置を改善
+
+### Fixed
+
+- 長いファイル名やコードでポップアップの幅が広がる問題を修正
+
 ## [0.3.4] - 2026-07-14
 
 ### Fixed
