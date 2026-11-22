@@ -144,6 +144,21 @@ export class PopupManager {
     const siteUrlInput = document.getElementById("site-url-input") as HTMLInputElement;
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
     const minImageSizeInput = document.querySelector<HTMLInputElement>("#min-image-size");
+    const preferDisplayedSizeInput = document.querySelector<HTMLInputElement>(
+      "#prefer-displayed-image-size",
+    );
+
+    const applyImageSettings = () => {
+      void setSettings(this.settings).catch(() =>
+        this.showLog(getMessage("errorSaveMinImageSize"), "error"),
+      );
+      document
+        .querySelectorAll<HTMLButtonElement>("#copy-md-button, #download-md-button")
+        .forEach((button) => {
+          button.disabled = true;
+        });
+      void this.handleConversion();
+    };
 
     if (minImageSizeInput) {
       minImageSizeInput.value = String(this.settings.minImageSize);
@@ -157,15 +172,15 @@ export class PopupManager {
         if (minImageSize === this.settings.minImageSize) return;
 
         this.settings.minImageSize = minImageSize;
-        void setSettings(this.settings).catch(() =>
-          this.showLog(getMessage("errorSaveMinImageSize"), "error"),
-        );
-        document
-          .querySelectorAll<HTMLButtonElement>("#copy-md-button, #download-md-button")
-          .forEach((button) => {
-            button.disabled = true;
-          });
-        void this.handleConversion();
+        applyImageSettings();
+      });
+    }
+
+    if (preferDisplayedSizeInput) {
+      preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
+      preferDisplayedSizeInput.addEventListener("change", () => {
+        this.settings.preferDisplayedImageSize = preferDisplayedSizeInput.checked;
+        applyImageSettings();
       });
     }
 
@@ -242,6 +257,7 @@ export class PopupManager {
       const responseContent = await chrome.tabs.sendMessage(activeTab.id, {
         action: "get-page-content",
         minImageSize: this.settings.minImageSize,
+        preferDisplayedImageSize: this.settings.preferDisplayedImageSize,
       });
       if (!responseContent?.html) {
         this.showLog(getMessage("errorNoHtml"), "error");
