@@ -145,6 +145,7 @@ export class PopupManager {
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
     const minImageSizeInput = document.getElementById("min-image-size") as HTMLInputElement;
     const minLinkCountInput = document.getElementById("min-link-count") as HTMLInputElement;
+    const useFullUrlsInput = document.getElementById("use-full-urls") as HTMLInputElement;
     const preferDisplayedSizeInput = document.getElementById(
       "prefer-displayed-image-size",
     ) as HTMLInputElement;
@@ -182,6 +183,11 @@ export class PopupManager {
     preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
     preferDisplayedSizeInput.addEventListener("change", () => {
       applyConversionSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
+    });
+
+    useFullUrlsInput.checked = this.settings.useFullUrls;
+    useFullUrlsInput.addEventListener("change", () => {
+      applyConversionSettings({ useFullUrls: useFullUrlsInput.checked });
     });
 
     document
@@ -277,7 +283,11 @@ export class PopupManager {
       }
 
       if (conversionId !== this.conversionId) return;
-      await this.handleHtml(responseContent.html, conversionId);
+      await this.handleHtml(
+        responseContent.html,
+        conversionId,
+        responseContent.baseUrl ?? activeTab.url,
+      );
     } catch {
       this.showLog(getMessage("warningNoAccess"), "warn");
     }
@@ -301,9 +311,13 @@ export class PopupManager {
   }
 
   // HTML を Markdown に変換してプレビューを表示
-  private async handleHtml(html: string, conversionId: number): Promise<void> {
+  private async handleHtml(html: string, conversionId: number, baseUrl: string): Promise<void> {
     await this.showLog(getMessage("parsingHtml"));
-    const cleanedHtml = parseHtmlContent(html, this.settings);
+    const cleanedHtml = parseHtmlContent(
+      html,
+      this.settings,
+      this.settings.useFullUrls ? baseUrl : undefined,
+    );
 
     await this.showLog(getMessage("convertingToMarkdown"));
     const markdown = await toMarkdown(cleanedHtml);

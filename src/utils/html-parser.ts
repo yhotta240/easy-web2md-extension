@@ -23,6 +23,7 @@ function isLinkOnlyBlock(block: Element, minLinkCount: number): boolean {
 export function parseHtmlContent(
   html: string,
   exclusions: ElementExclusions = DEFAULT_SETTINGS,
+  baseUrl?: string,
 ): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
@@ -79,5 +80,20 @@ export function parseHtmlContent(
   if (!doc.body) {
     return "";
   }
+
+  if (baseUrl) {
+    doc.body.querySelectorAll("a[href], img[src]").forEach((element) => {
+      const attribute = element.localName === "a" ? "href" : "src";
+      const value = element.getAttribute(attribute)?.trim();
+      if (!value || /^[a-z][a-z\d+.-]*:/i.test(value)) return;
+
+      try {
+        element.setAttribute(attribute, new URL(value, baseUrl).href);
+      } catch {
+        // 解決できない URL は元の表記を残す
+      }
+    });
+  }
+
   return doc.body.innerHTML;
 }

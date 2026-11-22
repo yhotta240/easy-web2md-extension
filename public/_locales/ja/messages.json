@@ -71,6 +71,12 @@
   "minLinkCount": {
     "message": "最小リンク数"
   },
+  "outputSettings": {
+    "message": "出力設定"
+  },
+  "useFullUrls": {
+    "message": "リンクと画像に完全なURLを使う"
+  },
   "errorSaveConversionSettings": {
     "message": "変換設定を保存できませんでした"
   },

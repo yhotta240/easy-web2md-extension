@@ -12,6 +12,7 @@ export type Settings = ElementExclusions & {
   saveFilename: boolean;
   minImageSize: number;
   preferDisplayedImageSize: boolean;
+  useFullUrls: boolean;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -19,6 +20,7 @@ export const DEFAULT_SETTINGS: Settings = {
   saveFilename: false,
   minImageSize: 200,
   preferDisplayedImageSize: false,
+  useFullUrls: false,
   excludeSiteHeader: true,
   excludeNavigation: true,
   excludeSidebar: true,
