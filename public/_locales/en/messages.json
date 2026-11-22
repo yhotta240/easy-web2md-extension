@@ -71,6 +71,9 @@
   "minLinkCount": {
     "message": "Minimum link count"
   },
+  "useFullUrls": {
+    "message": "Use full URLs for links and images"
+  },
   "errorSaveConversionSettings": {
     "message": "Could not save the conversion settings"
   },

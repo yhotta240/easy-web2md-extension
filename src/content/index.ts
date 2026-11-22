@@ -37,6 +37,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.action === "get-page-content") {
     sendResponse({
       html: getPageHtml(request.minImageSize ?? 0, request.preferDisplayedImageSize === true),
+      baseUrl: document.baseURI,
     });
   }
   // 非同期でsendResponseを呼び出す場合はtrueを返す必要があります
