@@ -50,8 +50,29 @@
   "preferDisplayedImageSize": {
     "message": "表示サイズを優先"
   },
-  "errorSaveMinImageSize": {
-    "message": "最小画像サイズを保存できませんでした"
+  "elementExclusions": {
+    "message": "除外する要素"
+  },
+  "excludeSiteHeader": {
+    "message": "サイトヘッダー"
+  },
+  "excludeNavigation": {
+    "message": "ナビゲーション"
+  },
+  "excludeSidebar": {
+    "message": "サイドバー"
+  },
+  "excludeFooter": {
+    "message": "フッター"
+  },
+  "excludeLinkBlocks": {
+    "message": "リンクだけのブロック"
+  },
+  "minLinkCount": {
+    "message": "最小リンク数"
+  },
+  "errorSaveConversionSettings": {
+    "message": "変換設定を保存できませんでした"
   },
   "markdownPreview": {
     "message": "マークダウン表示"

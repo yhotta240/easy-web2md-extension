@@ -50,8 +50,29 @@
   "preferDisplayedImageSize": {
     "message": "Prefer displayed image size"
   },
-  "errorSaveMinImageSize": {
-    "message": "Could not save the minimum image size"
+  "elementExclusions": {
+    "message": "Elements to exclude"
+  },
+  "excludeSiteHeader": {
+    "message": "Site header"
+  },
+  "excludeNavigation": {
+    "message": "Navigation"
+  },
+  "excludeSidebar": {
+    "message": "Sidebar"
+  },
+  "excludeFooter": {
+    "message": "Footer"
+  },
+  "excludeLinkBlocks": {
+    "message": "Link-only blocks"
+  },
+  "minLinkCount": {
+    "message": "Minimum link count"
+  },
+  "errorSaveConversionSettings": {
+    "message": "Could not save the conversion settings"
   },
   "markdownPreview": {
     "message": "Markdown Preview"

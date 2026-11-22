@@ -1,5 +1,5 @@
 import meta from "../../public/manifest.meta.json";
-import { DEFAULT_SETTINGS, type Settings } from "../settings";
+import { DEFAULT_SETTINGS, type ElementExclusions, type Settings } from "../settings";
 import { downloadFile } from "../utils/file-downloader";
 import { parseHtmlContent } from "../utils/html-parser";
 import { getMessage, initializeI18n } from "../utils/i18n";
@@ -144,14 +144,15 @@ export class PopupManager {
     const siteUrlInput = document.getElementById("site-url-input") as HTMLInputElement;
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
     const minImageSizeInput = document.getElementById("min-image-size") as HTMLInputElement;
+    const minLinkCountInput = document.getElementById("min-link-count") as HTMLInputElement;
     const preferDisplayedSizeInput = document.getElementById(
       "prefer-displayed-image-size",
     ) as HTMLInputElement;
 
-    const applyImageSettings = (changes: Partial<Settings>) => {
+    const applyConversionSettings = (changes: Partial<Settings>) => {
       this.settings = { ...this.settings, ...changes };
       void setSettings(this.settings).catch(() =>
-        this.showLog(getMessage("errorSaveMinImageSize"), "error"),
+        this.showLog(getMessage("errorSaveConversionSettings"), "error"),
       );
       document
         .querySelectorAll<HTMLButtonElement>("#copy-md-button, #download-md-button")
@@ -161,19 +162,38 @@ export class PopupManager {
       void this.handleConversion().catch(() => this.showLog(getMessage("warningNoAccess"), "warn"));
     };
 
-    minImageSizeInput.value = String(this.settings.minImageSize);
-    minImageSizeInput.addEventListener("change", () => {
-      if (!minImageSizeInput.reportValidity()) return;
-      const value = minImageSizeInput.valueAsNumber;
-      const minImageSize = Number.isNaN(value) ? DEFAULT_SETTINGS.minImageSize : value;
-      minImageSizeInput.value = String(minImageSize);
-      if (minImageSize !== this.settings.minImageSize) applyImageSettings({ minImageSize });
-    });
+    const setupNumberSetting = (
+      input: HTMLInputElement,
+      setting: "minImageSize" | "minLinkCount",
+    ) => {
+      input.value = String(this.settings[setting]);
+      input.addEventListener("change", () => {
+        if (!input.reportValidity()) return;
+        const value = input.valueAsNumber;
+        const nextValue = Number.isNaN(value) ? DEFAULT_SETTINGS[setting] : value;
+        input.value = String(nextValue);
+        if (nextValue !== this.settings[setting]) applyConversionSettings({ [setting]: nextValue });
+      });
+    };
+    setupNumberSetting(minImageSizeInput, "minImageSize");
+    setupNumberSetting(minLinkCountInput, "minLinkCount");
+    minLinkCountInput.disabled = !this.settings.excludeLinkBlocks;
 
     preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
     preferDisplayedSizeInput.addEventListener("change", () => {
-      applyImageSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
+      applyConversionSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
     });
+
+    document
+      .querySelectorAll<HTMLInputElement>('#element-exclusions input[type="checkbox"]')
+      .forEach((input) => {
+        const setting = input.name as Exclude<keyof ElementExclusions, "minLinkCount">;
+        input.checked = this.settings[setting];
+        input.addEventListener("change", () => {
+          if (setting === "excludeLinkBlocks") minLinkCountInput.disabled = !input.checked;
+          applyConversionSettings({ [setting]: input.checked });
+        });
+      });
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
       try {
@@ -283,7 +303,7 @@ export class PopupManager {
   // HTML を Markdown に変換してプレビューを表示
   private async handleHtml(html: string, conversionId: number): Promise<void> {
     await this.showLog(getMessage("parsingHtml"));
-    const cleanedHtml = parseHtmlContent(html);
+    const cleanedHtml = parseHtmlContent(html, this.settings);
 
     await this.showLog(getMessage("convertingToMarkdown"));
     const markdown = await toMarkdown(cleanedHtml);
