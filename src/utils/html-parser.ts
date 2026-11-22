@@ -1,5 +1,25 @@
 import { DEFAULT_SETTINGS, type ElementExclusions } from "../settings";
 
+function isLinkOnlyBlock(block: Element, minLinkCount: number): boolean {
+  if (block.querySelectorAll("a[href]").length < minLinkCount) return false;
+  if (block.querySelector("img, picture, h1, h2, h3, h4, h5, h6, pre, code, table, blockquote")) {
+    return false;
+  }
+
+  const textNodes = block.ownerDocument.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+  let text = textNodes.nextNode();
+  while (text) {
+    if (
+      !text.parentElement?.closest("a[href]") &&
+      /[^\s|｜・·•,、/／]/u.test(text.textContent ?? "")
+    ) {
+      return false;
+    }
+    text = textNodes.nextNode();
+  }
+  return true;
+}
+
 export function parseHtmlContent(
   html: string,
   exclusions: ElementExclusions = DEFAULT_SETTINGS,
@@ -49,6 +69,12 @@ export function parseHtmlContent(
       }
     });
   });
+
+  if (exclusions.excludeLinkBlocks) {
+    doc.querySelectorAll("p, ul, ol, div:has(> a[href], > span > a[href])").forEach((block) => {
+      if (block.isConnected && isLinkOnlyBlock(block, exclusions.minLinkCount)) block.remove();
+    });
+  }
 
   if (!doc.body) {
     return "";

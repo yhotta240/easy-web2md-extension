@@ -3,6 +3,8 @@ export type ElementExclusions = {
   excludeNavigation: boolean;
   excludeSidebar: boolean;
   excludeFooter: boolean;
+  excludeLinkBlocks: boolean;
+  minLinkCount: number;
 };
 
 export type Settings = ElementExclusions & {
@@ -21,4 +23,6 @@ export const DEFAULT_SETTINGS: Settings = {
   excludeNavigation: true,
   excludeSidebar: true,
   excludeFooter: true,
+  excludeLinkBlocks: false,
+  minLinkCount: 3,
 };

@@ -144,6 +144,7 @@ export class PopupManager {
     const siteUrlInput = document.getElementById("site-url-input") as HTMLInputElement;
     const siteUrlButton = document.getElementById("site-url-button") as HTMLButtonElement;
     const minImageSizeInput = document.getElementById("min-image-size") as HTMLInputElement;
+    const minLinkCountInput = document.getElementById("min-link-count") as HTMLInputElement;
     const preferDisplayedSizeInput = document.getElementById(
       "prefer-displayed-image-size",
     ) as HTMLInputElement;
@@ -161,25 +162,38 @@ export class PopupManager {
       void this.handleConversion().catch(() => this.showLog(getMessage("warningNoAccess"), "warn"));
     };
 
-    minImageSizeInput.value = String(this.settings.minImageSize);
-    minImageSizeInput.addEventListener("change", () => {
-      if (!minImageSizeInput.reportValidity()) return;
-      const value = minImageSizeInput.valueAsNumber;
-      const minImageSize = Number.isNaN(value) ? DEFAULT_SETTINGS.minImageSize : value;
-      minImageSizeInput.value = String(minImageSize);
-      if (minImageSize !== this.settings.minImageSize) applyConversionSettings({ minImageSize });
-    });
+    const setupNumberSetting = (
+      input: HTMLInputElement,
+      setting: "minImageSize" | "minLinkCount",
+    ) => {
+      input.value = String(this.settings[setting]);
+      input.addEventListener("change", () => {
+        if (!input.reportValidity()) return;
+        const value = input.valueAsNumber;
+        const nextValue = Number.isNaN(value) ? DEFAULT_SETTINGS[setting] : value;
+        input.value = String(nextValue);
+        if (nextValue !== this.settings[setting]) applyConversionSettings({ [setting]: nextValue });
+      });
+    };
+    setupNumberSetting(minImageSizeInput, "minImageSize");
+    setupNumberSetting(minLinkCountInput, "minLinkCount");
+    minLinkCountInput.disabled = !this.settings.excludeLinkBlocks;
 
     preferDisplayedSizeInput.checked = this.settings.preferDisplayedImageSize;
     preferDisplayedSizeInput.addEventListener("change", () => {
       applyConversionSettings({ preferDisplayedImageSize: preferDisplayedSizeInput.checked });
     });
 
-    document.querySelectorAll<HTMLInputElement>("#element-exclusions input").forEach((input) => {
-      const setting = input.name as keyof ElementExclusions;
-      input.checked = this.settings[setting];
-      input.addEventListener("change", () => applyConversionSettings({ [setting]: input.checked }));
-    });
+    document
+      .querySelectorAll<HTMLInputElement>('#element-exclusions input[type="checkbox"]')
+      .forEach((input) => {
+        const setting = input.name as Exclude<keyof ElementExclusions, "minLinkCount">;
+        input.checked = this.settings[setting];
+        input.addEventListener("change", () => {
+          if (setting === "excludeLinkBlocks") minLinkCountInput.disabled = !input.checked;
+          applyConversionSettings({ [setting]: input.checked });
+        });
+      });
 
     const getActiveTabUrlAndProcess = async (): Promise<void> => {
       try {

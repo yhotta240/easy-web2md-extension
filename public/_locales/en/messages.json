@@ -65,6 +65,12 @@
   "excludeFooter": {
     "message": "Footer"
   },
+  "excludeLinkBlocks": {
+    "message": "Link-only blocks"
+  },
+  "minLinkCount": {
+    "message": "Minimum link count"
+  },
   "errorSaveConversionSettings": {
     "message": "Could not save the conversion settings"
   },

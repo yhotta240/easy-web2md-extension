@@ -65,6 +65,12 @@
   "excludeFooter": {
     "message": "フッター"
   },
+  "excludeLinkBlocks": {
+    "message": "リンクだけのブロック"
+  },
+  "minLinkCount": {
+    "message": "最小リンク数"
+  },
   "errorSaveConversionSettings": {
     "message": "変換設定を保存できませんでした"
   },
